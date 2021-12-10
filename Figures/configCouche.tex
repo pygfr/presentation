@@ -1,0 +1,38 @@
+
+\fill[orange!10] (0,0) rectangle (10, 3);
+\fill[orange!20] (0,3) -- (10, 3) -- (11, 4.5) -- (1.5, 4.5) -- cycle;
+\fill[orange!30] (10, 3) -- (11, 4.5) -- (11, 1.5) -- (10,0) --cycle;
+\fill[gray!10] (-2,0) rectangle (0, 3);
+\fill[gray!20] (-2,3) -- (-0.5, 4.5) -- (1.5, 4.5) -- (0,3) -- cycle;
+
+\draw[ thick, black] (0,0) rectangle (10, 3);
+\draw[ thick, black] (10,3) -- (11, 4.5) -- (1.5, 4.5) -- (0,3);
+\draw[ thick, black]  (11, 4.5) -- (11, 1.5) -- (10,0);
+\draw[ thick, black]  (0, 0) -- (-2,0) -- (-2,3) -- (-0.5,4.5) -- (1.5, 4.5);
+\draw[ thick, black]  (0, 3) -- (-2,3) ;
+
+\draw (5,3.7) node[scale=2]{$1960$~K};
+\draw (5,1.5) node[scale=2]{adiabatic};
+\draw (1,5) node[scale=2, above right]{adiabatic};
+\draw[->,>=latex, black, thick](1,5) to[bend right] (-0.2, 4);
+\draw[->,>=latex, black, thick](1,5) to[bend left] (-1, 1.5);
+\draw (-2,-1.5) node[scale=2, below]{$400$~K};
+\draw[->,>=latex, black, thick](-2,-1.5) to[bend left]  (-2, 1.5);
+
+\draw (5,-1.5) node[scale=2, below]{$1\times10^6\, \text{W/m}^2$};
+\draw[->,>=latex, black, thick](5,-1.5) to (5, 0);
+
+
+\draw (10,-1.5) node[scale=2, below]{adiabatic};
+\draw[->,>=latex, black, thick](10,-1.5) to[bend right] (10.5, 2.5);
+
+
+\draw[<->,>=latex] (0, -3.5) to (0, -6.5);
+\draw[<->,>=latex] (0, -6.5) to (10, -6.5);
+\draw[<->,>=latex] (10, -6.5) to (11, -5.);
+\draw[<->,>=latex] (0, -6.5) to (-2, -6.5);
+
+\draw (5,-7) node[scale=2, below]{$185$~cm};
+\draw (10.5,-6) node[scale=2, right]{$13$~cm};
+\draw (-1,-7) node[scale=2, below]{$15$~cm};
+\draw (0,-5) node[scale=2, right]{$5$~cm};

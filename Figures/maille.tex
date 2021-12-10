@@ -1,0 +1,32 @@
+
+\fill[gray!10!](0,0) rectangle (5,5);
+\draw[very thick](0,0) rectangle (5,5);
+
+
+%normal
+\draw[->,>=latex, red] (0, 2.5) to (1, 2.5);
+\draw[->,>=latex, red] (5, 2.5) to (6, 2.5);
+\draw[->,>=latex, red] (2.5, 0) to (2.5, 1);
+\draw[->,>=latex, red] (2.5, 5) to (2.5, 6);
+
+
+\draw (2.5, 2.5) node[blue,scale=1.5]{$\bullet$};
+\draw (2.5,0) node[red, scale=2]{$\times$};
+\draw (2.5,5) node[red, scale=2]{$\times$};
+\draw (0,2.5) node[red, scale=2]{$\times$};
+\draw (5,2.5) node[red, scale=2]{$\times$};
+
+\draw (2.5, 3) node[blue,scale=1.5, above right]{$T$};
+\draw (2.5, 2.5) node[blue,scale=1.5,  right]{$P$};
+\draw (2.5, 2) node[blue,scale=1.5, below right]{$\chi$};
+
+\draw(5.,2.5) node[red,scale =1.6, above right]{$u$};
+\draw(0.,2.5) node[red,scale =1.6, above right]{$u$};
+
+\draw(2.5,0.7) node[red,scale =1.6, right]{$u$};
+\draw(2.5,5.7) node[red,scale =1.6, right]{$u$};
+
+\draw[->,>=latex, black, thick] (-1,6) to[bend left] (.5, 4.5);
+\draw(-1,6) node[scale =2, left]{$\omega$};
+
+\draw(6,6) node[scale =2, right, white]{$\omega$};

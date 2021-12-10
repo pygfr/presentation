@@ -1,0 +1,12 @@
+\select@language {french}
+\beamer@sectionintoc {1}{Contexte}{2}{0}{1}
+\beamer@sectionintoc {3}{Mod\IeC {\'e}lisation id\IeC {\'e}alis\IeC {\'e}e du probl\IeC {\`e}me}{9}{0}{2}
+\beamer@sectionintoc {4}{Simulation d'une interface en deux dimension par couplage de mod\IeC {\`e}le 0D et 2D dans un code int\IeC {\'e}gral}{12}{0}{3}
+\beamer@subsectionintoc {4}{1}{Environnement de travail}{12}{0}{3}
+\beamer@subsectionintoc {4}{2}{Pr\IeC {\'e}sentation du nouveau mod\IeC {\`e}le}{14}{0}{3}
+\beamer@subsectionintoc {4}{3}{R\IeC {\'e}sultats}{17}{0}{3}
+\beamer@sectionintoc {5}{Prise en compte plus fine du bain de corium par une approche CFD et un mod\IeC {\`e}le VOF/FT}{22}{0}{4}
+\beamer@subsectionintoc {5}{1}{Environnement de travail}{22}{0}{4}
+\beamer@subsectionintoc {5}{2}{Pr\IeC {\'e}sentation de la m\IeC {\'e}thode VOF/FT et des adaptations apport\IeC {\'e}es}{22}{0}{4}
+\beamer@subsectionintoc {5}{3}{R\IeC {\'e}sultats de validation et cas test de la couche mince}{22}{0}{4}
+\beamer@sectionintoc {6}{Conclusions et perspectives}{43}{0}{5}

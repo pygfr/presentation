@@ -1,0 +1,1365 @@
+\pdfminorversion=4
+\documentclass{beamer}
+
+
+
+\usepackage{bm} 
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}	
+%Pour impression des transparents sans animations
+%option trans (à préciser aussi dans les \only
+%\documentclass[trans]{beamer}
+%
+%Pour impression des transparents sur papier (pour les CRR)
+%\documentclass[handout]{beamer}
+%
+
+
+\newcommand{\procor}{\texttt{PROCOR}}
+\newcommand{\inte}{\Gamma}
+\newcommand{\fus}{\text{fus}}
+\newcommand{\sol}{\text{sol}}
+\newcommand{\cht}{\text{cht}}
+\newcommand{\cond}{\text{cond}}
+\newcommand{\chaL}{\mathcal{H}}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\norm}{\vect{n}}
+\newcommand{\gradGhost}{\overset{g}{\nabla}}
+\newcommand{\difirho}{\frac{1}{\rho_l}-\frac{1}{\rho_s}}
+\newcommand{\difrho}{\rho_l - \rho_s}
+\newcommand{\npl}{{n+1}}
+\newcommand{\nml}{{n-1}}
+\newcommand{\ghost}{\overset{{g}}{\nabla}}
+\newcommand{\entha}{\chaL}
+\newcommand{\tim}{\mathcal{T}}
+\newcommand{\refe}{\text{ref}}
+\newcommand{\hlTab}[1]{\renewcommand{\arraystretch}{#1}}
+\newcommand{\bord}{\text{bord}}
+\newcommand{\subsubsubsection}[1]{\underline{\textit{#1}}}
+\newcommand{\cell}{\text{maille}}
+\newcommand{\som}{\text{som}}
+\newcommand{\are}{\text{are}}
+\newcommand{\maxi}{\text{max}}
+\newcommand{\normeVec}[1]{\left\Vert #1\right\Vert}
+\newcommand{\bib}[1]{{\color{cea_texte!80}\tiny\textit{[#1]}}}
+
+
+\newcommand{\llb}{\llbracket}
+\newcommand{\rrb}{\rrbracket}
+
+\renewcommand{\frac}{\dfrac}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\nn}{\nonumber}
+
+\newcommand{\tx}[1]{{\text{#1}}}
+\newcommand{\FF}[1]{{\mathsf{#1}}}
+\newcommand{\FN}[1]{{\mathcal{#1}}}
+\newcommand{\W}{\bm{W}}
+\newcommand{\Wt}{\bm{\widetilde{W}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\Frac}{\displaystyle\frac}
+\newcommand{\Int}{\displaystyle\int}
+\newcommand{\Sum}{\displaystyle\sum}
+\newcommand{\matr}[1]{\mathbf{{#1}}}  
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+\newcommand{\dy}{\Delta y}
+\newcommand{\dz}{\Delta z}  
+%\newfont{\numerikEleven}{cmss11}
+\newfont{\numerikEleven}{ecrm1000}
+\newfont{\numerikTen}{cmss10}
+\newfont{\numerikNine}{cmss9}
+\newfont{\numerikEight}{cmss8}
+\newfont{\numerikSeven}{cmss7}
+\newfont{\numerikSix}{cmss6}
+\newfont{\numerikFive}{cmss5}
+\newfont{\numerikFour}{cmss4}
+\newcommand{\ie}{\textit{i.e.} }
+\newcommand{\aposteriori}{\textit{a posteriori }}
+\newcommand{\apriori}{\textit{a priori }}
+\newcommand{\ra}{\rightarrow} 
+\newcommand{\lra}{\longrightarrow} 
+\newcommand{\Lra}{\Longrightarrow} 
+%\theoremstyle{plain}% Theorem-like structures provided by amsthm.sty
+\renewcommand{\ell}{\begin{cursive}l\end{cursive}}
+\newcommand{\egg}{\begin{cursive}lg\end{cursive}}
+
+\renewcommand{\tx}[1]{{\text{#1}}}
+\newcommand{\ext}{{\text{ext}}}
+\newcommand{\intf}{{\text{in}}}
+
+\newcommand{\liq}{{\text{liq}}}
+\newcommand{\pool}{{\text{liq}}}
+\newcommand{\ves}{{\text{ves}}}
+\renewcommand{\top}{{\text{top}}}
+\renewcommand{\bot}{{\text{bot}}}
+\newcommand{\massEnthalpy}[2][\null]{h_{#2}^{#1}}
+
+\newcommand{\Va}{{\textit{Cht. Vol. 1.0}}~}
+\newcommand{\Vb}{{\textit{Cht. Vol. 2.0}}~}
+\newcommand{\IBC}{{\textit{IBC}}~}
+\newcommand{\hist}{{\textit{version 1.8.1}}~}
+
+
+
+
+\newcommand{\bea}{\begin{eqnarray} }
+\newcommand{\eea}{\end{eqnarray} }
+\usetheme{cea2019}
+
+%\usepackage[default,scale=0.85]{opensans} 
+%\usepackage{lmodern} 
+
+
+
+%
+\titre{Modélisation et simulation numérique des fronts de fusion/solidification à l'interface d'un bain de corium}
+\evenement{Soutenance de thèse}
+\auteurs{Adrien Drouillet, CEA, IMB}
+\datedocument{17 décembre 2021}
+\auteurprincipal{Adrien Drouillet}
+%%
+\begin{document}
+
+%% TITLE PAGE %%
+\PageTitre{}
+%%
+
+
+
+
+\section{Contexte}
+\begin{frame}
+    \frametitle{Contexte accident grave de réacteur nucléaire}
+\begin{columns}[c]
+        \begin{column}{0.4\textwidth}
+            \includegraphics[width=0.9\textwidth]{Figures/accident_grave.png}
+        \end{column}
+\footnotesize
+	\begin{column}{0.6\textwidth}
+		\begin{ceablock}{Un accident grave de réacteur nucléaire}
+			\begin{itemize}
+				\item Mauvaise évacuation de l'\textbf{énergie thermique} produite par le cœur.
+				\item Formation de \textbf{corium} (liquide composé des éléments du cœur fondu) par dégradation du combustible.
+				\item \textbf{Propagation du corium} en cuve, puis potentiellement dans le puits de cuve. {\color{cea_texte!80}\tiny\textit{[Jacquemain et al.]}}
+			\end{itemize}	
+	    	\end{ceablock}
+		\begin{ceablock}{Stratégies de rétention en cuve (IVR)}
+		\hspace{-0.8cm}\\
+		\underline{Objectif :} contenir le corium en cuve.
+			\begin{itemize}
+				\item \textbf{Tenue thermique} de la cuve.
+				\item Tenue mécanique de la cuve.
+			\end{itemize}	
+	    	\end{ceablock}
+		$\Rightarrow$ Étude de la thermohydraulique du bain de corium et de la fonte de la cuve.
+        \end{column}
+\normalsize
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Physique du bain de corium}
+    \scriptsize
+    \begin{ceablock}{Principaux phénomènes}
+        \begin{itemize}
+		\item \textbf{Stratification du bain} en plusieurs phases immiscibles et de propriétés différentes. {\color{cea_texte!80}\tiny\textit{[Tsurikov et al.]}}
+		\item Phénomène de \textbf{convection} dus aux forts gradients de température dans la partie oxyde.
+		\item Phénomène de \textbf{focalisation des flux thermiques} au niveau de la couche mince.
+	\end{itemize}
+    \end{ceablock}
+\begin{center}
+		\begin{tikzpicture}[scale = 0.6, every node/.style={scale=0.6}]
+        \input{./Figures/bainCor.tex}
+		\end{tikzpicture}
+
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Interface de fusion/solidification : la condition de Stefan}
+    \footnotesize
+    \begin{columns}[c]
+        \begin{column}{0.4\textwidth}
+		\begin{tikzpicture}[scale = 0.4, every node/.style={scale=0.4}]
+        \input{./Figures/bainCor2.tex}
+		\end{tikzpicture} 
+        \end{column}
+\footnotesize
+	\begin{column}{0.6\textwidth}
+			\begin{itemize}
+				\item  Condition de Stefan \bib{Gupta; Stefan} :
+						\begin{align} \label{eq:Stefan_cond}
+						\vect{u}^\inte &= u^\inte \, \vect{n}^\Gamma = \Frac{1}{\rho^{\Gamma} \Delta \mathcal{H}^{\Gamma}} (\varphi_l - \varphi_s) \, \vect{n}^\Gamma.
+						\end{align}
+				\item Avec les flux thermiques :
+						\begin{align} \label{eq:heat_flux}
+						\varphi_k&=\vect{\varphi}_k\cdot\vect{n}^\Gamma,\\
+						\vect{\varphi_k} &= -\lambda_k \, \nabla T_k,
+						\end{align}
+			\end{itemize}
+        \end{column}
+\normalsize
+	\end{columns}
+	
+\begin{itemize}
+	\item Interface entre deux \textbf{matériaux pures homogènes},
+	\item Front de fusion/solidification considéré à l'\textbf{équilibre thermodynamique} $\rightarrow$ solide formé à température de solidification,
+	\item  \textbf{Interface raide}   $\rightarrow$  On ne considère pas de zone de mélange diffuse.
+\end{itemize}
+
+\fbox{\begin{minipage}[]{\textwidth}
+\begin{center}
+ \textcolor{red}{Problème de \textbf{fusion/solidification}  entre \textbf{un liquide chaud et un solide froid}}.\\
+\color{red}Caractère \textbf{hétérogène} des conditions à l'interface.
+\end{center}
+\end{minipage}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Identification des interfaces de fusion / solidification : états d'interface}
+    \footnotesize
+    \begin{columns}[c]
+        \begin{column}{0.4\textwidth}
+    \begin{center}
+		\begin{tikzpicture}[scale = 0.4, every node/.style={scale=0.6}]
+        \input{./Figures/etatInter.tex}
+		\end{tikzpicture}
+
+\end{center}
+        \end{column}
+\footnotesize
+	\begin{column}{0.6\textwidth}
+    
+    \begin{center}
+		\begin{tikzpicture}[scale = 0.5, every node/.style={scale=0.6}]
+        \input{./Figures/logigramEtat.tex}
+		\end{tikzpicture}
+
+\end{center}
+        \end{column}
+\normalsize
+	\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Échelles de modélisations}
+    \footnotesize
+	\begin{columns}[T]
+    	\begin{column}[T]{0.47\textwidth}
+    	 \color{cea_rouge}\underline{Échelle de modélisation intégrale :}\color{cea_texte}\\
+    	 \begin{itemize}
+    	 		\item Modélisation d'une séquence accident grave.
+    	 		\item Modèle rapide donc grossier.
+    	 		\item Hypothèses de fermetures, corrélations
+    	 		\item Utilise des données provenant des expériences et des modélisations plus fines.
+    	 \end{itemize}
+    	\end{column}
+    	
+    	\begin{column}[T]{0.47\textwidth}
+    	\color{cea_rouge}\underline{Échelle de modélisation fine :}\color{cea_texte}\\
+    	  \begin{itemize}
+    	 	\item Modélise des phénomènes précis.
+    	 	\item Utilise des codes maillés, plus coûteux.
+    	 	\item Sujet de modélisation déterminé par les expériences ou codes intégraux.
+    	 	\item Tend à modéliser des phénomènes plus complexes, couplés avec l'évolution des moyens de calculs.
+    	 \end{itemize}
+    	\end{column}
+    	\end{columns}
+    	\vspace{0.4cm}
+    	\begin{center}
+    	\begin{tikzpicture}[scale = 0.35, every node/.style={scale=0.4}]
+
+
+
+		\draw[<->, >=latex, line width = 0.15cm, red] (0,0) to[bend right=40] (15,0);
+		
+
+		\end{tikzpicture}
+		\end{center}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Objectifs de la thèse}
+    \normalsize
+    
+
+        	\begin{ceaalertblock}{Objectifs de la thèse :}
+        	
+        	Proposer des outils numériques à différents niveaux de modélisation pour suivre ces interfaces de front de fusion/solidification.
+        	\begin{itemize}
+        		\item Développer des modèles et méthodes numériques adaptées au suivi de ce type d'interface. 
+        		\item Capacité des méthode et modèles à évoluer vers des fermetures thermodynamiques plus complexes.
+        		\item Implémenter ces méthodes dans des codes de simulations utilisés dans le contexte accidents graves.
+        		\item Valider ces méthodes sur des cas tests.
+        		\item Utiliser ces méthodes dans un cadre plus complexe se rapprochant des problématiques accidents graves. 
+        	\end{itemize}
+        	\end{ceaalertblock}
+\end{frame}
+\section*{Sommaire}
+%\Titre{Sommaire}
+\begin{frame}
+\frametitle{Sommaire}
+\footnotesize
+  \tableofcontents
+\end{frame}
+
+\section{Modélisation idéalisée du problème}
+\begin{frame}
+    \frametitle{Équations considérées}
+    \footnotesize
+
+\begin{columns}[T]
+    \begin{column}[T]{0.45\textwidth}
+    \begin{center}
+    \color{cea_rouge}\underline{Pour le solide (équation de la chaleur) :}\color{cea_texte}
+    \begin{align*}
+    	\rho C_p \frac{\partial T}{\partial t}  &=\nabla\cdot\left(\lambda \nabla T\right) + f,
+    \end{align*}
+        \end{center}
+    \end{column}
+    
+    
+    \begin{column}[T]{0.55\textwidth}
+    \begin{center}
+\color{cea_rouge}\underline{Pour le liquide (chaleur + Navier-Stokes) :} \color{cea_texte}
+\begin{align*}
+\nabla. \vect{u} &= 0,\\
+\frac{ \partial \vect{u}}{\partial t} + \vect{u}.\nabla \vect{u} &= \frac{-1}{\rho} \nabla p + \nu \Delta \vect{u} - \mathcal{B}(T-T^{\text{ref}}) \vect{g} ,\\
+\rho C_p (\frac{\partial T}{\partial t} + \vect{u} \cdot \nabla T ) &= \nabla\cdot\left(\lambda \nabla T\right) + f,
+\end{align*}
+    \end{center}
+\end{column}
+\end{columns}
+\hspace{-1.8cm}
+\begin{center}
+\color{cea_rouge}\underline{Pour l'interface liquide-solide (condition de Stefan) :}\color{cea_texte}
+\begin{align*}
+	\vect{u}^\Gamma &= u \, \vect{n}^\Gamma = \frac{1}{\rho^{\Gamma} \Delta \mathcal{H}^{\Gamma}} (\varphi_l - \varphi_s) \, \vect{n}^\Gamma
+\end{align*}
+Où $\Gamma$ sert à \textbf{différencier les paramètres} de fusion et de solidification.\\
+\vspace{0.3cm}
+Paramètres de fusion/solidification \textbf{déduit de la composition} du liquide et du solide.
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Fermetures thermiques à l'interface}
+\footnotesize
+
+
+\begin{center}
+		\begin{tikzpicture}[scale = 0.5, every node/.style={scale=0.5}]
+			\input{./Figures/logigramEtat.tex}
+		\end{tikzpicture}
+
+\end{center}
+\begin{ceablock}{Fermetures thermiques à l'interface :}
+\begin{align}
+	(\mathcal{F}) &:\left\{ \begin{array}{l}
+T=T^\sol,  \; \text{ si } \Dot{m} \leq 0, \\
+\vect{\varphi}_s \cdot \norm^\inte= \vect{\varphi}_l \cdot \norm^\inte,  \; \text{ si } T^\sol < T^\inte < T^\fus,\\
+T=T^\fus,   \; \text{ si } \Dot{m}>0.
+ \end{array}\right.
+\end{align}
+\end{ceablock}
+\end{frame}
+
+%--------------------------------------------------------------------------
+%==========================================================================
+%--------------------------------------------------------------------------
+
+\Intercalaire{Simulation d'une interface en deux dimension par couplage de modèle 0D et 2D dans un code intégral}
+\section{Simulation d'une interface en deux dimension par couplage de modèle 0D et 2D dans un code intégral}
+\subsection{Environnement de travail}
+\begin{frame}
+    \frametitle{Présentation du code \procor{} :}
+    \scriptsize
+    %!! Code intégral, couplage de modèle, 0D, analyse de sensibilité, contrainte imposées par AG, partionnement.
+      \begin{ceablock}{Contraintes imposées par le contexte AG}
+		\begin{itemize}
+			\item \textbf{Multi-physique et multi-échelle} : neutronique, thermique, thermohydraulique, mécanique, chimique ... 
+			\item Peu de données.
+		\end{itemize}
+    \end{ceablock}
+    \begin{ceablock}{Conséquences sur PROCOR :}
+		\begin{itemize}
+			\item Études statistiques de sensibilité : implémentation de \textbf{modèles rapides} (0D model)
+			\item Architecture spécifique, pensée pour le couplage de modèles \bib{Viot et al. 2018}. Paradigme de \textbf{partitionnement de modèle}.
+		\end{itemize}
+    \end{ceablock}
+    \begin{center}
+    	\includegraphics[width=0.7\textwidth]{Figures/applicationProcor.png}
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Modèle d'interface 0D}
+   \footnotesize
+   \underline{Première hypothèse} : \textbf{Géométrie rectangulaire "multi-1D"}.\\
+   \vspace{0.3cm}
+
+ \color{cea_rouge} \underline{Condition d'interface 0D} : \color{cea_texte} $$ \dot{m} =  \frac{mes(\Gamma)}{\Delta H_{fus}} (\overline{\varphi}_l^{ls}(t) -\overline{\varphi}_s^{ls}(t))$$
+\color{cea_rouge} \underline{Équation 0D du solide} : \color{cea_texte} $$ \frac{\partial m_s}{\partial t} = -\dot{m} \, \, \textbf{ et }  \, \, C_s (m_s \frac{d\overline{T_s}}{dt} + \dot{m} (T_{\Gamma} - \overline{T_s} )) = -\overline{\varphi}^i_s \times mes(\delta \Omega_s \setminus \Gamma)    + \overline{\varphi}^{ls, i}_s \times mes(\Gamma) $$
+
+\color{cea_texte!70}	Ce sont principalement des équations bilans. Deux variables suivies : la température moyenne du solide et la masse du solide.\color{cea_texte}
+%These are mainly balanced equation. They follow two variables : the mean temperature of the solid and the mass of the solid.
+%Two hypotesis are needed to close the model : one on the \textbf{geometry of the solid} and another one on the \textbf{temperature profil}
+\begin{columns}[c]
+	\begin{column}{0.55\textwidth}
+	%\underline{Première hypothèse} : \textbf{Géométrie rectangulaire "multi-1D".\footnotemark[2]} \\% Solid is considered rectangular, and mass and thermal exchange are only autorized through right and left border. \\
+	\underline{Deuxième hypothèse} : \textbf{Profil de température quadratique \bib{Le Tellier et al.}}.% profil is considered. Chosen after 	a study on many other possibilities (see ??). This profil corresponds to a stationnary solution.
+	\vspace{0.5cm}
+	\fbox{\begin{minipage}[]{\textwidth}
+	\center\textcolor{red}{On cherche à lever ces deux hypothèses.}
+	\end{minipage}}
+	\end{column}
+    \begin{column}{0.45\textwidth}
+	\begin{center} 
+	\includegraphics[width=0.62\textwidth]{Figures/modele_croute_0D.png}
+			
+		\end{center}
+		\end{column}
+\end{columns}
+%\footnotetext[2]{\tiny Le Tellier, R., Skrzypek, E., Saas, L., 2017. On the treatment of plane fusion front in lumped parameter thermal models with convection.}
+\end{frame}
+
+\subsection{Présentation du nouveau modèle}
+\begin{frame}
+    \frametitle{Modèle d'interface 2D}
+	\footnotesize
+	\begin{ceablock}{Équations considérées :}
+		\begin{eqnarray*}  \label{eq:IdealCrust_Temp}
+			\rho_s C_s \frac{\partial T_s}{\partial t}  &=& \lambda_s \Delta T_s  \text{ \, (Modèle du solide) }\\
+			\Vec{u} &=&\frac{1}{\rho^{\Gamma} \Delta \mathcal{H}^{\Gamma}} (\Vec{\varphi}_l - \Vec{\varphi}_s)  \Vec{n} \text{ \, ( Modèle d'interface ) }\\
+			&+&\text{ couplage avec les modèles 0D }
+		\end{eqnarray*}
+	\end{ceablock}
+	
+	
+	\begin{columns}[c]
+	\begin{column}{0.5\textwidth}
+	\begin{ceablock}{Couplage des sous-modèles:}
+	%%%%%%%%%%%%
+		\begin{tikzpicture}[scale = 0.35, every node/.style={scale=0.4}]
+
+		%%def des systemes
+		\node[draw, ellipse, fill=gray!10, text centered,text width = 3.5cm,  minimum width = 5cm, minimum height = 4cm] (corium) at (0,1.0) {\Large{Autres modèles}};
+
+		\node[draw, ellipse, fill=gray!10, text centered,text width = 3.5cm,  minimum width = 5cm, minimum height = 4cm] (croute) at (10,0.0) {\Large{Modèle du solide}};
+
+		\node[draw, ellipse, fill=gray!10, text centered,text width = 3.5cm,  minimum width = 5cm, minimum height = 4cm] (stefan) at (6,7.0) {\Large{Modèle de l'interface}};
+
+
+		%% mise en place des relations
+
+
+		\draw[->, >=latex, line width = 0.05cm] (corium) to[bend right =15 ]  (croute);
+		\node[draw, fill = white] at  (5,-0.5){\large{$\varphi_l$}};
+
+		\draw[->, >=latex, line width = 0.05cm] (croute) to[bend right=15]  (corium);
+		\node[draw, fill = white] at  (5,1.5){\large{$\varphi_s$}};
+
+		\draw[->, >=latex, line width = 0.05cm] (croute) to[bend right=15]  (stefan);
+		\node[draw, fill = white] at  (9.0,3.5){\large{$\varphi_s$}};
+
+		\draw[->, >=latex, line width = 0.05cm] (stefan) to[bend right=15]  (croute);
+		\node[draw, fill = white] at  (7,3.5){\large{$u$}};
+
+		\draw[->, >=latex, line width = 0.05cm] (corium) to[bend right=15]  (stefan);
+		\node[draw, fill = white] at  (3.6,3.4){\large{$\varphi_l$}};
+
+		\draw[->, >=latex, line width = 0.05cm] (stefan) to[bend right=15]  (corium);
+		\node[draw, fill = white] at  (2.3,4.5){\large{$u$}};
+
+		\end{tikzpicture}
+	%%%%%%%%%%%%
+		\end{ceablock}
+	\end{column}
+	\begin{column}{0.5\textwidth}
+\scriptsize
+\begin{center}
+    
+
+		\includegraphics[width=0.65\textwidth]{Figures/ideal2D_sketch.pdf}
+\end{center}
+    
+	\end{column}
+	\end{columns}
+
+
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résolution du modèle d'interface 2D}
+    \footnotesize
+	\begin{ceablock}{Discrétisation et déplacement de l'interface}
+	\begin{columns}[c]
+	\begin{column}{0.7\textwidth}
+	\begin{itemize}
+		\item Interface maillée par des \textbf{segments verticaux et horizontaux}.\\
+        \item Association à chaque segments des paramètres ($T_{fus}$, $\Delta \mathcal{H}^{fus}$, ...)\\
+        \item Déplacements verticaux et horizontaux.\\
+        \item Déplacements 2D, par \textbf{splitting directionnel}.\\
+        \item \textbf{Reconstruction du maillage} de l'interface à chaque pas de temps.\\
+        \item Donc projection de certains paramètres (température et état du segment) d'une interface à l'autre.
+	\end{itemize}
+	
+	\end{column}
+	\begin{column}{0.3\textwidth}
+	\begin{center}
+		\includegraphics[width=1.55\textwidth]{Figures/interface.pdf}
+	\end{center}
+
+	\end{column}
+
+	\end{columns}
+	\center \fbox{\color{red}{$\bm{\varphi_l}$ est donné par le modèle liquide et $\bm{\varphi_s}$ est obtenu par le modèle solide.}}
+		\end{ceablock}
+	\end{frame}
+	
+\begin{frame}
+    \frametitle{Résolution du modèle solide}
+    \footnotesize
+
+
+\begin{columns}[c]
+	\begin{column}{0.6\textwidth}
+	\begin{ceablock}{Résolution du solide par éléments finis mixtes}
+\begin{enumerate}
+			\item \textbf{Remaillage}: adaptation du maillage à la nouvelle interface.
+			\item \textbf{Projection}: de la température température sur le nouveau maillage (utilisation des fonctions éléments finis).
+			\item \textbf{Résolution}: de l'équation de la chaleur avec l'élément mixte de Raviart-Thomas.
+		\end{enumerate}
+\center $\Rightarrow$ \textbf{Identification} directe des flux thermiques à l'interface.
+		\end{ceablock}
+	\end{column}
+	\begin{column}{0.5\textwidth}
+	\center
+		\includegraphics[width=0.65\textwidth]{Figures/crust_mesh.pdf}\\
+		\includegraphics[width=0.65\textwidth]{Figures/elementFiniMixte2.pdf}
+
+		
+			\end{column}
+
+	\end{columns}
+
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Algorithme final}
+%\footnotesize
+%	\begin{ceablock}{Algorithme final, en utilisant un schéma semi-explicite:}	
+%        \begin{enumerate}
+%            \item Résolution de l'équation de la chaleur par méthode élément finis
+%            $$\left( (\Omega_s)_h^n, (T_j^{n})_{j=1, \ldots, N_j^n}, \, \text{BCs}, \right) \longrightarrow \quad  ( T_j^{n+1}, (\vec{\varphi}_j^{n+1})_{j=1, \ldots, N_j^n} )$$
+%            \item Déplacement de l'interface
+%            $$\left( \Gamma^{{n}}, 
+%((\lambda\nabla T)_j^{n+1})_{j=1, \ldots, N_j^n}
+%(\vec{\varphi}_j)_{j=1, \ldots, N_j^n}, \, \text{BCs}, \right) \longrightarrow\quad   \Gamma^{{n+1}} $$
+ %           \item Remaillage du solide avec la nouvelle interface
+%            $$\left( \Omega_s^n, (\Omega_s)_h^n, \Gamma^{{n+1}} \right) \longrightarrow \quad   \left( \Omega_s^{n+1}, (\Omega_s)_h^{n+1} \right)$$
+%            \item Projection de l'ancienne température sur le nouveau domaine
+%            $$\left( (\Omega_s)_h^{n+1}, (\Omega_s)_h^{n}, (T_j^{n+1})_{j=1, \ldots, N_j^n} \right) \longrightarrow \quad   ( T_k^{n+1} )_{k=1, \ldots, N_k^{n+1}}$$
+%        \end{enumerate}
+%    \end{ceablock}
+%\end{frame}
+
+\subsection{Résultats}
+\begin{frame}
+    \frametitle{Résultats : validation cas test de Stefan, angle 2D}
+    \scriptsize
+	\color{cea_rouge}\underline{Problème de Stefan 1D :} \color{cea_texte}
+	\begin{center}
+
+		\begin{tikzpicture}[scale = 0.7, every node/.style={scale=0.7}]
+			\input{./Figures/config.tex}
+		\end{tikzpicture}
+
+
+	\begin{table}
+	\centering
+	%    \hspace{-2cm}
+	\resizebox{.89\textwidth}{!}{
+		\begin{tabular}{c|ccc}
+			\hline
+			$\Delta t$ & $L_1$ error & $L_2$ error & $L_\infty$ error \\
+			\hline
+			$1.0$ & $2.87\times 10^{-1}$ & $3.11\times 10^{-1}$& $8.33\times 10^{-1}$\\
+			$0.5$ & $9.70\times 10^{-2}$ & $1.04\times 10^{-1}$& $2.92\times 10^{-1}$\\
+			$0.3$  & $4.75\times 10^{-2}$ & $4.90\times 10^{-2}$& $1.03\times 10^{-1}$\\
+			$0.1$ & $1.18\times 10^{-2}$ & $1.28\times 10^{-2}$& $8.48\times 10^{-2}$\\
+			
+			\hline
+		\end{tabular} 
+		\hspace{-0.1cm}
+		\begin{tabular}{c|ccc}
+			\hline
+			$\Delta x$ & $L_1$ error & $L_2$ error & $L_\infty$ error \\
+			\hline
+			$0.6$  & $1.30\times 10^{-1}$ & $1.31\times 10^{-1}$& $2.00\times 10^{-1}$\\
+			$0.3$  & $7.85\times 10^{-2}$ & $7.93\times 10^{-2}$& $1.24\times 10^{-1}$\\
+			$0.2$  & $8.89\times 10^{-2}$ & $5.81\times 10^{-2}$& $1.03\times 10^{-1}$\\
+			$0.1$  & $4.75\times 10^{-2}$ & $4.90\times 10^{-2}$& $1.03\times 10^{-1}$\\
+			$0.05$ & $3.97\times 10^{-2}$ & $4.13\times 10^{-2}$& $9.26\times 10^{-2}$\\
+			\hline
+	\end{tabular} }
+	
+\end{table}
+\end{center}
+\begin{columns}[t]
+	\begin{column}{0.4\textwidth}
+    \color{cea_rouge}\underline{Cas test de l'angle 2D (Schéma à gauche, résultat à droite) :}\color{cea_texte}
+\begin{center}
+        \includegraphics[width=0.60\textwidth]{Figures/2DStefan.pdf}
+        \end{center}
+        \end{column}
+		\begin{column}{0.6\textwidth}
+		\begin{center}
+        \includegraphics[width=0.95\textwidth]{Figures/Angle2D2_2.pdf}
+        \end{center}
+        \end{column}
+        \end{columns}
+
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Présentation du cas test de croûte}
+ \scriptsize
+    \underline{Objectif} : utilisation du modèle 2D dans une simulation plus complexe (avec un couplage d'autres modèles). Simulation de la formation de la croûte pendant une stratégie IVR. Trois étapes \bib{Viot et al. 2020}:
+    \begin{itemize}
+        \item Bain de corium tout oxyde $\rightarrow$ Formation d'une croûte tout oxyde.
+        \item Ajout d'élément métallique dans le corium liquide $\rightarrow$ Stratification du bain de corium et discontinuités des flux thermiques provenant du liquide.
+        \item Décroissance artificielle de la chaleur résiduelle dans le corium liquide  $\rightarrow$ Solidification massive du corium.
+    \end{itemize}
+    \begin{center}
+    \includegraphics[width=0.85\textwidth]{Figures/industrial_test_sketch.pdf}
+    \end{center}
+    
+        	\begin{ceaalertblock}{Restriction sur le modèle 2D}
+        	\tiny
+        	En raison du couplage avec les autres modèles 0D, \textbf{les déplacements verticaux de l'interface sont supprimés}.
+    	\end{ceaalertblock}
+    
+\end{frame}
+
+
+\begin{frame}[t]
+    \frametitle{Cas test de formation de la croûte}
+	\footnotesize
+	
+    Plusieurs comparaisons ont été réalisés entre le modèle d'interface 0D et le nouveau modèle d'interface 2D.\\
+
+    \includegraphics[width=0.47\textwidth]{Figures/IndustrialTestmasses.pdf}
+    \includegraphics[width=0.47\textwidth]{Figures/IndustrialTestdiffMasses.pdf}
+
+\end{frame}
+\begin{frame}[t,noframenumbering]
+    \frametitle{Cas test de formation de la croûte}
+\footnotesize
+    Plusieurs comparaisons ont été réalisés entre le modèle d'interface 0D et le nouveau modèle d'interface 2D.\\
+   \includegraphics[width=0.47\textwidth]{Figures/IndustrialTestmasses2.pdf}
+    \includegraphics[width=0.47\textwidth]{Figures/IndustrialTestdiffMasses2.pdf}\\
+     \center \includegraphics[width=0.3\textwidth]{Figures/modele_croute_0D.png}
+    
+    
+\end{frame}
+
+%--------------------------------------------------------------------------
+%==========================================================================
+%--------------------------------------------------------------------------
+\Intercalaire{Prise en compte plus fine du bain de corium par une approche CFD et un modèle VOF/FT}
+\section{Prise en compte plus fine du bain de corium par une approche CFD et un modèle VOF/FT}
+\subsection{Environnement de travail}
+\subsection{Présentation de la méthode VOF/FT et des adaptations apportées}
+\subsection{Résultats de validation et cas test de la couche mince}
+
+
+\begin{frame}
+    \frametitle{Équations considérées}
+\footnotesize
+\begin{align}
+	 (\mathcal{P})  &: \left\{ {\hlTab{2}\begin{array}{l} 
+	\rho \frac{\partial  \vect{u}}{\partial t} +\rho \vect{u} \nabla  \vect{u} = -\nabla P + \rho \vect{g} + \vect{\mathcal{D}},\\
+	\nabla \cdot \vect{u} = \color{red} - \Dot{m} \left( \frac{1}{\rho_l} - \frac{1}{\rho_s} \right) \delta^\Gamma,\\
+	\frac{\partial \rho C_p \delta T}{\partial t} +\nabla \cdot (\rho \vect{u} C_p \delta T) = \nabla \cdot (\lambda \nabla T)\color{red} +  \Dot{m} \Delta \mathcal{H}^\Gamma \delta^\Gamma,\\
+	\frac{\partial \chi}{\partial t} + \vect{u^\inte} \cdot \nabla \chi =0,
+	 \end{array}}\right.
+\end{align}
+ avec pour tout $(\vect{x},t)$ dans $\Gamma \times \tim$ :
+\begin{align}
+	\vect{u}^\inte&= \color{red} - \frac{\Dot{m}}{\rho_s} \norm^\inte \color{black}\color{black}, 
+\end{align}
+et pour tout $(\vect{x},t)$ dans $\Gamma \times \tim$ :
+\begin{align}
+	\Dot{m} &= \frac{\varphi_l - \varphi_s}{ \Delta \chaL^\Gamma} .
+\end{align}
+Dans ce système les inconnues sont  la vitesse $\vect{u}$, la pression $P$, la température $T$ et la fonction $\chi$.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Équations considérées : fermeture à l'interface}
+\footnotesize
+
+
+\begin{center}
+		\begin{tikzpicture}[scale = 0.5, every node/.style={scale=0.5}]
+			\input{./Figures/logigramEtat.tex}
+		\end{tikzpicture}
+
+\end{center}
+\begin{ceablock}{Définition de trois lois de fermetures thermiques à l'interface, fonction de l'état d'interface :}
+\begin{align}
+	(\mathcal{F}) &:\left\{ \begin{array}{l}
+T=T^\sol,  \; \text{ si } \Dot{m} \leq 0, \\
+\vect{\varphi}_s \cdot \norm^\inte= \vect{\varphi}_l \cdot \norm^\inte,  \; \text{ si } T^\sol < T^\inte < T^\fus,\\
+T=T^\fus,   \; \text{ si } \Dot{m}>0.
+ \end{array}\right.
+\end{align}
+\end{ceablock}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Présentation du code TrioCFD}
+    \footnotesize
+    \begin{itemize}
+    \item \textbf{Résolution de Navier-Stokes incompressible} par méthode de prédiction-projection
+        \item \textbf{Discrétisations spatiales} :\\
+            $\bullet$ Volumes Différences finies (VDF) : rectangle en 2D, hexaèdre en 3D.\\
+            $\bullet$ Volumes Éléments Finis (VEF) : triangle en 2D, tétraèdre/hexahèdre en en 3D .
+        
+ %       \item Schéma semi-implicite "SIMPLE" (seul les termes de diffusion sont implicités)
+%        \item Schéma implicite
+    \end{itemize}
+    
+\begin{columns}[c]
+	\begin{column}{0.4\textwidth}
+\begin{center}
+		\begin{tikzpicture}[scale = 0.5, every node/.style={scale=0.5}]
+			\input{./Figures/maille.tex}
+		\end{tikzpicture}
+\end{center}
+\end{column}
+\begin{column}{0.6\textwidth}
+\begin{ceablock}{Plusieurs méthodes disponibles, notamment :}
+\begin{itemize}
+	\item Une \textbf{méthode VOF/FT} : pour des interfaces de changement de phase entre liquide-vapeur. 
+	\item Une \textbf{méthode de pénalisation} sans changement de phase (modélisation d'un agitateur en fond de bécher).
+	\item Une résolution de la température par \textbf{méthode Ghost-Fluid}.
+\end{itemize}
+\end{ceablock}
+\end{column}
+\end{columns}
+\vspace{0.3cm}
+\fbox{\begin{minipage}[]{\textwidth}
+\begin{center}
+\textcolor{red}{$\Rightarrow$ Utiliser la méthode VOF-FT pour suivre l'interface.\\
+ $\Rightarrow$ Vérifier la compatibilité de la méthode de pénalisation avec le changement de phase.\\
+ $\Rightarrow$ Adpater la méthode ghost-fluid.}
+\end{center}
+\end{minipage}}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Méthode VOF--Front-Tracking}
+    \scriptsize
+    \begin{columns}[c]
+    \begin{column}{0.7 \textwidth}
+    \begin{ceablock}{La méthode Front-Tracking}
+        \begin{itemize}
+            \item Utilisation d'un maillage eulérien pour résoudre les équations de Navier-Stokes
+            \item Construction d'un deuxième maillage, lagrangien, pour modéliser l'interface. 
+            \item Nécessite des méthodes d'interpolation pour communiquer des informations d'un maillage à l'autre.
+            \item Besoin de méthodes spécifiques sur le maillage eulérien pour utiliser l'information du maillage lagrangien.
+            \item Pas naturellement conservatif.
+            \item Certains phénomènes difficiles à prendre en compte (coalescence, séparation de phase ...) 
+            \item Suivi précis de l'interface, accepte de grandes déformations
+        \end{itemize}
+    \end{ceablock}
+\begin{ceablock}{La méthode VOF}
+        \begin{itemize}
+            \item Méthode eulérienne, utilisant une fonction de fraction de présence.
+            \item Conservative par construction.
+            \item Pas de suivi de l'interface, besoin d'algorithme de reconstruction d'interface.
+            
+        \end{itemize}
+    \end{ceablock}
+\end{column}
+\begin{column}{0.3 \textwidth}
+\begin{center}
+		\begin{tikzpicture}[scale = 0.3, every node/.style={scale=0.3}]
+			\input{./Figures/maillageInterface.tex}
+		\end{tikzpicture}
+
+\end{center}
+\begin{center}
+		\begin{tikzpicture}[scale = 0.3, every node/.style={scale=0.3}]
+			\input{./Figures/mailleMixte.tex}
+		\end{tikzpicture}
+
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Couplage des équations}
+        %\textbf{Schéma en temps explicite} : Résolution de la vitesse du fluide, déplacement des marqueurs et mise à jour de la fonction $\chi_v$, résolution de la température.
+        \footnotesize
+        \begin{ceablock}{Schéma en temps explicite :}
+        \begin{itemize}
+            \item Résolution de la vitesse du fluide.
+            			\begin{itemize}
+				\item Dans un premier temps résolution par méthode de prédiction-projection avec divergence nulle.
+				\item Ajout de la méthode de pénalisation, toujours avec divergence nulle.
+				\item Puis ajout d'une divergence non nulle.
+			\end{itemize}
+            \item Déplacement des marqueurs et mise à jour de la fonction $\chi_v$.
+            \item Résolution de la température.
+            \begin{itemize}
+            	\item Présentation de la méthode ghost-fluid.
+            	\item Présentation des modifications apportées.
+            \end{itemize}
+        \end{itemize}
+        \end{ceablock}
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résolution de la vitesse : méthode de prédiction-projection}
+    \footnotesize
+    \begin{ceablock}{Résolution de la vitesse sur tout le domaine par une méthode de prédiction-projection.}
+	\textbf{Prédiction :}
+	\begin{align} 
+		\vect{u}^* &= \vect{u}^n - \Delta t \nabla_h \cdot (\vect{u}^n \vect{u}^n) + \frac{\Delta t}{\rho^n_f} \nabla_h \cdot(\mu^n(\nabla_h \vect{u}^n+\nabla^T_h \vect{u}^n)),
+	\end{align}
+	où $\vect{u}^*$ est la prédiction de la vitesse, $\mu^n$ la viscosité discrète, $\rho^n_f$ la masse volumique discrète aux faces  et où $\vect{g}$ est le vecteur gravité.  %(obtenue par interpolation linéaire)
+	
+
+	\textbf{Projection :}
+Rajout de la contribution de la pression $P^\npl$, de manière à obtenir une vitesse à divergence nulle.
+
+	\begin{align}
+		\vect{u}^{n+1} &= \vect{u}^* + \frac{\Delta t}{\rho^n_f} \nabla_h P^{n+1},
+	\end{align}
+	où, $P^{n+1}$ est obtenue en résolvant : 
+\begin{align}
+\label{eq:Pression}
+					 \nabla_h \cdot  \left( \frac{1}{\rho^n_f} \nabla_h P^\npl \right) &=  -\frac{1}{\Delta t} \nabla_h \cdot \vect{u}^*. 
+\end{align}
+	\end{ceablock}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résolution de la vitesse : la méthode de pénalisation}
+    \footnotesize
+     \footnotesize
+        \begin{ceablock}{Modification de l'algorithme initial pour imposer une vitesse nulle sur le solide}
+	Utilisation de la méthode de pénalisation, déjà présente dans TrioCFD (voir M. Belliard et al.)
+\begin{align}
+	\vect{I}^n &= \nabla_h \cdot (\vect{u}^n \vect{u}^n) + \frac{1}{\rho^n} \nabla_h \cdot(\mu^n(\nabla_h \vect{u}^n+\nabla_h^T \vect{u}^n)).
+\end{align}
+	\textbf{Prédiction :}
+\begin{align}
+	(1+\frac{\chi}{\eta} ) \vect{u}^* &= \vect{u}^n + \Delta t \vect{I}^n, \label{eq:PDFpred1} \\ 
+	\vect{u}^* &= \frac{\vect{u}^n + \Delta t \vect{I}^n}{(1+\frac{\chi}{\eta} )}. \label{eq:PDFpred2}
+\end{align}
+	où $\eta$ est le facteur de pénalisation très proche de $0$.
+	
+
+	\textbf{Projection :}
+
+\begin{align}
+	\vect{u}^{n+1} &= \vect{u}^* + \frac{\Delta t}{\rho^n_f} \nabla_h P^{n+1} +\frac{\chi}{\eta}(\vect{u}^*-\vect{u}^\npl),\\
+-\nabla_h \cdot \vect{u}^* &= \Delta t \, \frac{\eta}{\eta + \chi} \nabla_h \cdot \left( \frac{1}{\rho^n_f} \nabla_h P^\npl \right) \underset{\eta \to 0}{\longrightarrow} \vect{0}.
+%
+%	\frac{\eta}{\eta + \chi} \nabla_h \cdot \left( \frac{1}{\rho^n_f} \nabla_h P^\npl \right) &= -\frac{1}{\Delta t} \nabla_h \cdot \vect{u}^* .
+\end{align}
+	\end{ceablock}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résolution de la vitesse : discrétisation de la divergence}
+    \footnotesize
+    \footnotesize
+        Il faut prendre en compte la divergence non-nulle due au changement de volume.\\
+\begin{align}
+	 \int_\omega \zeta (t) dx &= \int_{\inte (t) \cap \omega} \Dot{m}(t) \left( \frac{1}{\rho_l} - \frac{1}{\rho_s} \right) d\sigma dt.
+\end{align}
+
+\begin{ceablock}{Discrétisation}
+\begin{align}
+	\zeta^n &= \frac{\normeVec{\inte^n \cap \omega}}{\normeVec{\omega}}\Dot{m}^n \left( \frac{1}{\rho_l} - \frac{1}{\rho_s} \right).
+\end{align}
+\end{ceablock}
+\begin{ceablock}{Modification de l'espace de projection}
+\begin{align}
+	\label{eq:pression3}
+	\frac{\eta}{\eta + \chi} \nabla_h \cdot \left( \frac{1}{\rho^n_f} \nabla_h P^\npl \right) &= -\frac{1}{\Delta t} \nabla_h \cdot \vect{u}^* + \frac{1}{\Delta t} \zeta^n.
+\end{align}
+\end{ceablock}
+
+
+\begin{center}
+		\begin{tikzpicture}[scale = 0.5, every node/.style={scale=0.5}]
+			\input{./Figures/divDisDepl.tex}
+		\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résolution de l'interface}
+    \footnotesize
+Calcul de $\vect{u}^\inte$ :
+\begin{align}
+	\label{eq:interfaceVitesse}
+	\vect{u}^{\inte,n} &=  - \nabla \cdot \left( \frac{\Dot{m}^n}{\rho_s}d^n \right),
+\end{align}
+\begin{enumerate}
+	\item Déplacement théorique de la fonction couleur $\chi$,
+	\item déplacements des marqueurs $m_k$,
+	\item algorithme de remaillage, lissage, barycentrage,
+	\item correction du déplacement des marqueurs à l'aide de la fonction $\chi$,
+	\item mise à jour de la fonction $\chi$ en fonction des marqueurs,
+	\item mise à jour de la fonction level-set $d$, représentant la distance signée à l'interface.
+
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résolution de la température : méthode Ghost-Fluid}
+    	\footnotesize
+\begin{ceablock}{Séparation de l'équation de température en deux équations, une pour chaque phase :}
+\begin{align}
+ (\delta T_k^\npl)   = (\delta T^n) + \frac{\lambda_s \Delta t }{\rho_s C_{p,s}}  \Delta_h T_s^n - \Delta t \nabla_h \cdot ( \vect{u}^{T,n} \delta T_s^n).
+\end{align}
+définie sur tout le domaine. On se concentre, dans la suite, sur l'équation thermique  du solide.
+\end{ceablock}
+
+\begin{ceablock}{Température d'interface définie par méthode Ghost-Fluid}
+1/ Calcul d'un gradient thermique normal à l'interface sur le centre des mailles solides.
+\begin{align}
+ (\ghost T_s \cdot \norm) &= \frac{T^\inte - T_s}{d}.
+\end{align}
+\end{ceablock}
+2/ Extrapolation du gradient aux mailles mixtes et liquides proches de l'interface.
+\begin{center}
+		\begin{tikzpicture}[scale = 0.65, every node/.style={scale=0.65}]
+			\input{./Figures/conductionSchema2.tex}
+		\end{tikzpicture}
+
+\end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résolution de la température : états d'interface}
+   	\footnotesize
+\begin{enumerate}
+	\item Suivi de l'état d'interface par un nouveau champ sur les mailles eulériennes :
+\begin{align}
+\label{eq:etatn2}
+E_{i,j}^\npl &=\left\{ {\renewcommand{\arraystretch}{1.5}\begin{array}{l} 
+\text{conduction} \text{ si } T^\sol < T^{\Gamma,n}_{i,j} <T^\fus,\\
+\text{conduction} \text{ si } E_{i,j}^n = \text{fusion} \text{ et } \dot{m}_{i,j}<0,\\
+\text{conduction} \text{ si } E_{i,j}^n = \text{solidification} \text{ et } \dot{m}_{i,j}>0,\\
+\text{fusion} \text{ si } T^{\Gamma,n}_{i,j} \geq T^\fus \text{ et } \dot{m}_{i,j} \geq 0,\\
+\text{solidification} \text{ si } T^{\Gamma,n}_{i,j} \leq T^\sol \text{ et } \dot{m}_{i,j} \leq 0.
+ \end{array}}\right.
+\end{align}
+Puis extrapolation de ce nouveau champ d'état aux mailles pures proches.
+\item Calcul d'une nouvelle température d'interface, dépendante de l'état de la maille :
+\begin{align}
+	T^{\inte} &= \left\{ {\renewcommand{\arraystretch}{1.}\begin{array}{l l l} 
+		T^\fus & \text{ si la maille mixte est en fusion},\\
+		T^{\text{cond}} & \text{  si la maille mixte est en  conduction},\\
+		T^\sol & \text{ Si la maille mixte est en solidification}.
+ \end{array}}\right.
+\end{align} 
+où $T^{\cond}$ est calculée le cas échéant.
+
+
+
+
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Calcul de $ T^{\cond}$}
+Pour approcher $T^{\text{cond}}$, on  utilise une \textbf{interpolation linéaire}.
+    \begin{align}
+    T^{\text{cond}} &= \Frac{\lambda_s \overline{T_s} \, \overline{d_l} - \lambda_l \overline{T_l}  \, \overline{d_s}}{\lambda_s \overline{d_l} - \lambda_l \overline{d_s}}.
+\end{align}
+\footnotesize
+Où $\overline{T_k}$ est une température moyenne du côté de la phase $k$ et  $\overline{d_k}$ une distance moyenne du côté de la phase $k$.
+\begin{columns}[c]
+    \begin{column}{0.5 \textwidth}
+\begin{center}
+		\begin{tikzpicture}[scale = 0.45, every node/.style={scale=0.45}]
+			\input{./Figures/Tcond1.tex}
+		\end{tikzpicture}
+
+\end{center}
+\end{column}
+    \begin{column}{0.5 \textwidth}
+
+\begin{center}
+		\begin{tikzpicture}[scale = 0.5, every node/.style={scale=0.5}]
+			\input{./Figures/TempInterfaceCoin.tex}
+		\end{tikzpicture}
+
+\end{center}
+   \end{column}
+   \end{columns}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Calcul de $\Dot{m}$}
+	\footnotesize
+On définit $\Dot{m}^n$ par : 
+\begin{align} \label{eq:mPoint}
+	\Dot{m}^\npl &= \frac{\Dot{m}_l^\npl - \Dot{m}_s^\npl}{\Delta \mathcal{H}^\Gamma},
+\end{align}
+où :
+\begin{align} \label{eq:mPointk}
+	\Dot{m}_k &= \lambda_k \, (\ghost T_k \cdot \norm),
+\end{align}
+
+Pour assurer le respect de l'état de l'interface, si l'état est en conduction, alors, le taux $\Dot{m}^n$ est imposé à $0$.
+\begin{align}
+	\Dot{m}^n_{i,j} &= \left\{ {\renewcommand{\arraystretch}{2}\begin{array}{l l} 
+	0 &\text{ si } E_{i,j}^\npl = \text{conduction}\\
+	\frac{\Dot{m}_l^\npl - \Dot{m}_s^\npl}{\Delta \mathcal{H}^\Gamma} &\text{ sinon }
+	\end{array}}\right.	
+\end{align}
+
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{Implémentation et planification des cas test}
+	
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Cas test de validation : cas test de Stefan}
+	\scriptsize
+
+\begin{columns}
+\begin{column}{0.5 \textwidth}
+\underline{Solide et liquide de même nature, densité différente}
+        %\vspace{0.5\linewidth}
+        \includegraphics[width=0.7\textwidth]{Figures/StefanConvDX.eps}	
+	%\includegraphics[width=1\textwidth]{Figures/avantApresRhoDiff0000.png}
+
+
+\begin{table}
+	%    \hspace{-2cm}
+	%\resizebox{.99\textwidth}{!}{
+	%\renewcommand{\arraystretch}{1}
+	\tiny
+		\begin{tabular}{|c|c||cc|}
+			\hline
+			$N_x$ & $\Delta x$ & $L^2$ error & $L^2$ order \\
+			\hline
+			\hline
+			50 	& 0.08  & $4.072E-3$ & --  \\
+			75  & 0.053 & $2.752E-3$ & $0.95$  \\
+			100 & 0.04  & $2.068E-3$ & $1.02$   \\
+			150 & 0.027 & $1.368E-3$ & $1.05$   \\
+			200 & 0.02  & $1.011E-3$ & $1.01$   \\
+			400 & 0.01  & $5.137E-4$ & $0.98$   \\
+			500 & 0.008 & $4.172E-4$ & $0.93$  \\
+			\hline
+			-- & --     &  $L^2$ average  $\rightarrow$ & 0.99 \\
+			\hline
+		\end{tabular}
+\end{table}
+\includegraphics[width=1\textwidth]{Figures/avantApresRhoDiff0000.png}
+\end{column}
+    \begin{column}{0.5 \textwidth}
+		\
+		\begin{tikzpicture}[scale = 0.6, every node/.style={scale=0.6}]
+			\input{./Figures/config.tex}
+		\end{tikzpicture}
+
+
+   \end{column}
+   \end{columns}
+
+
+\end{frame}
+\begin{frame}
+    \frametitle{Cas test de validation : cas test de Stefan}
+	\scriptsize
+	
+	\begin{center}
+
+\includegraphics[width=0.9\textwidth]{Figures/StefanTFusTSol.eps}
+\end{center}
+	\end{frame}
+
+\begin{frame}
+    \frametitle{Cas test de validation : cas test de l'angle 2D}
+	\tiny
+
+
+\begin{columns}
+\begin{column}{0.5 \textwidth}
+
+\underline{Solide et liquide de même nature, densité différente}
+     \begin{center}
+        %\vspace{0.5\linewidth}
+        \includegraphics[width=0.7\textwidth]{Figures/angleIBCDiff0000.png}	\\
+	\includegraphics[width=0.7\textwidth]{Figures/AngleExEyDiff.eps}
+    \end{center}
+\end{column}
+    \begin{column}{0.5 \textwidth}
+\begin{center}
+		\begin{tikzpicture}[scale = 0.25, every node/.style={scale=0.25}]
+			\input{./Figures/configAngle2.tex}
+		\end{tikzpicture}
+
+\end{center}
+
+
+   \end{column}
+   \end{columns}
+
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cas test de validation : cas test de l'angle 2D}
+	\tiny
+\begin{center}
+
+\includegraphics[width=0.7\textwidth]{Figures/AngleTfusTsol_0_0150000.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cas test de la couche mince : présentation du cas test}
+    \footnotesize
+    % ---------   FIGURE   ---------------
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale =0.5, every node/.style={scale=0.7}]
+\input{./Figures/cuve.tex}
+\end{tikzpicture}
+\begin{tikzpicture}[scale =0.3, every node/.style={scale=0.4}]
+\input{./Figures/configCouche.tex}
+\end{tikzpicture}
+\label{fig:configCoucheMince}
+\end{figure}
+% ---------   FIGURE   ---------------
+
+
+\begin{table}[!h]
+	\centering
+	\tiny
+		\begin{tabular}{|c|c|}
+		\hline
+		Parameter & Value\\
+		\hline \hline
+		Density $\rho$ & $6720$~$\text{kg/m}^3$\\	
+		Coefficient of thermal expansion, $\beta$ & $3\times 10^{-5}$\\
+		Thermal conductivity, $\lambda$ & $20$~W/mK\\
+		Fusion temperature, $T^\fus$ & $1658$~K\\
+		Enthalpy of fusion, $\Delta \mathcal{H}^\fus$ & $2.76\times 10^5$~J/kg\\
+		Heat capacity, $C_p$ & $674$~J/kg~K\\
+		Kinematic viscosity, $\mu$ & $4.5696 \times 10^{-3}$~$\text{m}^2/\text{s}$\\
+		\hline
+		\end{tabular}%}
+	\label{tab:Acier}
+\end{table}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résultat 2D}
+    \footnotesize
+\begin{columns}[c]
+    \begin{column}{0.5 \textwidth}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Figures/CoucheMince0100000.png}\\
+\includegraphics[width=0.9\textwidth]{Figures/CoucheMince1000000.png}\\
+\includegraphics[width=0.9\textwidth]{Figures/CoucheMince4500000.png}
+
+
+\end{center}
+\end{column}
+    \begin{column}{0.5 \textwidth}
+\includegraphics[width=0.9\textwidth]{Figures/CoucheMince0300000.png}\\
+\includegraphics[width=0.9\textwidth]{Figures/CoucheMince2000000.png}\\
+\includegraphics[width=0.9\textwidth]{Figures/CoucheMince6500000.png}
+
+   \end{column}
+   \end{columns}
+\center Cas test de la couche mince 2D -- résultats pour plusieurs temps -- température en couleur et vitesse en vecteur noir.
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Résultat 3D}
+    \scriptsize
+
+
+\begin{columns}[c]
+    \begin{column}{0.5 \textwidth}
+\begin{center}
+   \includegraphics[width=0.7\textwidth]{./Figures/10s_TEMP0000.png}\\
+	\hspace{-0.8cm}
+\includegraphics[width=0.7\textwidth]{./Figures/10s_VIT0000.png}\\
+\includegraphics[width=0.6\textwidth]{./Figures/PositionInterface3D_10s.eps}
+
+
+\end{center}
+\end{column}
+    \begin{column}{0.5 \textwidth}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{./Figures/CoucheMinceTEMP0300001.png}\\
+\hspace{-0.8cm}
+\includegraphics[width=0.7\textwidth]{./Figures/CoucheMinceVIT0300000.png}\\
+\includegraphics[width=0.6\textwidth]{./Figures/Yslice_30s.eps}
+
+
+\end{center}
+   \end{column}
+   \end{columns}
+\center Cas test de la couche mince 3D -- résultats pour plusieurs temps (10s à droite et 30s à gauche) -- en haut : température en couleur -- au milieu : vecteur vitesse  -- en bas : comparaison de la position de l'interface pour plusieurs coupe et avec le résultat 2D.
+
+
+\end{frame}
+
+
+%--------------------------------------------------------------------------
+%==========================================================================
+%--------------------------------------------------------------------------
+\section{Conclusions et perspectives}
+\Intercalaire{Conclusions et perspectives}
+
+\begin{frame}
+    \frametitle{Conclusions}
+    \scriptsize
+    \begin{ceablock}{Modèle 2D lagrangien du code \procor}
+        \begin{itemize}
+            \item Un nouveau modèle 2D/0D a été développé. L'équation de la chaleur est résolue en 2D et l'interface liquide-solide évolue en 2D.
+            \item Pas besoin de schéma implicite.
+            \item Méthode éléments finis mixtes, remaillage, projection, couplage de modèle.
+            \item Plusieurs validations ont été réalisées ainsi que des comparaisons avec un modèle 0D préexistant.
+            \item Un cas test plus industriel (formation de la croûte) a été proposé, avec comparaison au modèle 0D.
+        \end{itemize}
+    \end{ceablock}
+    
+     \begin{ceablock}{Modèle VOF/FT du code TrioCFD}
+        \begin{itemize}
+        	\item Définition de la notion d'états d'interface et écriture d'un modèle CFD les incluant.
+            \item Adaptation d'une méthode VOF-FT à notre problématique liquide solide.
+            \item Utilisation de la méthode de pénalisation pour supprimer la vitesse sur le solide.
+            \item Adaptation de la méthode Ghost-Fluid pour prendre en compte les différentes fermetures thermique de l'interface.
+            \item Validation des développements réalisés sur des cas tests de validation 1D et 2D.
+            \item Réalisation d'un cas test plus industriel (simulation de la couche métallique légère), proposition d'une illustration 3D.
+        \end{itemize}
+    \end{ceablock}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Perspectives}
+    \scriptsize
+    
+         \begin{itemize}
+        	\item  Poursuite de la validation du modèle 2D développé dans \procor, notamment avec une comparaison entre code maillé.
+        	\item  Complexification de la physique à l'interface, par exemple en prenant en compte un changement de phase non congruent et en introduisant des modèles de thermochimie.
+        	 \item  Utilisation du modèle dans d'autres applications, par exemple pour la modélisation d'un récupérateur dans le cadre d'un réacteur neutron rapide.
+        	 
+        	  {\center \rule{0.8\linewidth}{1pt}}
+        	  	
+        	\item  Validation 3D de la méthode Ghost-Fluid adaptée. Plus largement, des benchmarks entre codes et méthodes numériques pour valider les développements réalisés sur la méthode VOF-FT. 
+        	\item Benchmark avec d'autres codes liée à une campagne d'essais LIVE.
+        	\item Prochaine collaboration avec des équipes canadiennes sur un benchmark portant sur une configuration 3D.
+        	
+        	
+        	
+            
+            \item Amélioration de la méthode d'interpolation utilisée dans la méthode Ghost-Fluid. Éventuellement remplacement de la méthode Ghost-Fluid pour une méthode plus adaptée.
+            \item Introduction du suivi des espèces dans le modèle de CFD.
+            
+           
+            \item Poursuite de l'étude de la couche mince avec ajout de méthodes LES (Large Eddy Simulation) pour la modélisation de la turbulence.
+            
+            {\center \rule{0.8\linewidth}{1pt}}
+            
+            \item Proposer des remontées d'échelles entre les simulations CFD et les modélisations intégrales.
+            
+        \end{itemize}
+
+\end{frame}
+
+%--------------------------------------------------------------------------
+%==========================================================================
+%--------------------------------------------------------------------------
+%\section{Bibliographie}
+\Intercalaire{Bibliographie}
+%------------------------------------------------------------------------------------------galium3minBIS0000
+
+\begin{frame}
+    \frametitle{Bibliographie \procor{}}
+	\footnotesize
+
+\begin{itemize}
+	\item Viot, L., Saas, L., De Vuyst, F., 2018. \textbf{Solving coupled problems of lumped parameter models in a platform for severe accidents in nuclear reactors.} International Journal for Multiscale Computational Engineering.
+	\item Le Tellier, R., Skrzypek, E., Saas, L., 2017. \textbf{On the treatment of plane fusion front in lumped parameter thermal models with convection.} Applied Thermal Engineering 120, 314–326. 
+	\item \url{https://fenicsproject.org/} 
+	\item Viot, L., Le Tellier, R., Peybernes, M., 2020. \textbf{Modeling of the corium crust of a stratified corium pool during severe accidents in light water reactors.} Nuclear Engineering and Design.
+	\item \color{blue} Drouillet, A., Le Tellier, R., Loubère, R., Peybernes, M., Viot, L., \textbf{Multi-dimensional simulation of phase change by a 0D-2D model coupling via Stefan condition.} Communications on Applied Mathematics and Computation.
+
+
+
+
+
+\end{itemize}
+
+
+\end{frame}
+\begin{frame}
+    \frametitle{Bibliographie TrioCFD}
+	\footnotesize
+%ÉTUDES PHYSIQUE, EXPÉRIMENTALE ET NUMÉRIQUE DES MÉCANISMES DE BASE INTERVENANT DANS LES ÉCOULEMENTS DIPHASIQUES EN MICRO-FLUIDIQUE
+\begin{itemize}
+	\item \url{https://triocfd.cea.fr/}
+	\item Mathieu, B., n.d. \textbf{Études physique, expérimentale et numérique des mécanismes de base intervenant dans les écoulements diphasiques en micro-fluidique.} Polytech Marseille.
+	\item Bois, G., 2021. \textbf{A comprehensive description of the mixed Front-Tracking/Volume-of-Fluid/Level-set algorithm of TrioCFD.} (preprint)
+	\item Belliard, M., Fournier, C., 2010. \textbf{Penalized direct forcing and projection schemes for Navier–Stokes.} Comptes Rendus Mathematique 348, 1133–1136.
+	\item \color{blue} Drouillet, A., Bois, G., Le Tellier, R., Loubère, R., Peybernes, M.,  \textbf{Mathematical modeling and associated numerical simulation of fusion/solidification front evolution in the context of severe accident of nuclear power engineering.} Soumis nov. 2020
+ 
+
+\end{itemize}
+
+
+\end{frame}
+%==========================================================================================
+\Intercalaire{Merci pour votre attention}
+\end{document}

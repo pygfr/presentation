@@ -1,0 +1,78 @@
+
+
+
+%\fill[gray!10!](2,3) -- (8,3) -- (8,2) -- (9,2) -- (9,1) --(10,1) -- (10, -1) -- (9,-1) -- (9,-2) -- (8,-2) -- (8,-3) -- (2,-3) -- (2,-2) -- (1,-2) -- (1, -1) -- (0,-1) -- (0,1) -- (1,1) -- (1,2) -- (2,2) -- cycle;
+%\draw[very  thick](2,3) -- (8,3) -- (8,2) -- (9,2) -- (9,1) --(10,1) -- (10, -1) -- (9,-1) -- (9,-2) -- (8,-2) -- (8,-3) -- (2,-3) -- (2,-2) -- (1,-2) -- (1, -1) -- (0,-1) -- (0,1) -- (1,1) -- (1,2) -- (2,2) -- cycle;
+
+%interface
+%\draw[red!25!, very thick] (5,3) ..controls +(2,-1) and +(0,2).. (6,0);
+%\draw[red!25!, very thick] (6,0) ..controls +(0,-2) and +(-3,2).. (5,-3);
+
+
+% maillage carte
+
+
+
+
+%\draw[black, dashed, thick] (4.5,-2) circle (1.5);
+%\draw[->,>=latex, black] (6, -2) to (12.5, -3);
+
+\fill[gray!10!] (13,0) rectangle (19,-6);
+
+\draw[blue!60, dashed](12.8,0) -- (19.2,0);
+\draw[blue!60, dashed, dashed](12.8,-2) -- (19.2,-2);
+\draw[blue!60, dashed](12.8,-4) -- (19.2,-4);
+\draw[blue!60, dashed](12.8,-6) -- (19.2,-6);
+
+
+
+\draw[blue!60, dashed](13.,0.2) -- (13,-6.2);
+\draw[blue!60, dashed](15.,0.2) -- (15,-6.2);
+\draw[blue!60, dashed](17.,0.2) -- (17,-6.2);
+\draw[blue!60, dashed](19.,0.2) -- (19,-6.2);
+
+
+\foreach \x in { 13 ,15, 17, 19}
+    \draw (\x, 0) node[blue!60, scale =1.5]{ $\bullet$};
+\foreach \x in { 13 ,15, 17, 19}
+    \draw (\x, -2) node[blue!60, scale =1.5]{ $\bullet$};
+\foreach \x in { 13 ,15, 17, 19}
+    \draw (\x, -4) node[blue!60, scale =1.5]{ $\bullet$};
+\foreach \x in { 13 ,15, 17, 19}
+    \draw (\x, -6) node[blue!60, scale =1.5]{ $\bullet$};
+
+
+
+
+
+%noral
+
+
+% Maillage interface
+
+%\draw (5, 3) node[red, scale=2]{$\bm{\times}$};
+%\draw (6.25, 1.8) node[red, scale=2]{$\bm{\times}$};
+%\draw (6,0) node[red, scale=2]{$\bm{\times}$};
+%\draw (3.9, -2) node[red, scale=2]{$\bm{\times}$};
+%\draw (5, -3) node[red, scale=2]{$\bm{\times}$};
+
+%\draw[red, dashed, thick](5, 3) -- (6.25, 1.8) -- (6,0) -- (3.9, -2) -- (5, -3);
+
+
+\draw[red!25!, very thick] (16, -6) ..controls +(-4.8,4) and +(-0,0).. (16.5, 0);
+\draw (14, -3) node[red, scale=2]{$\bm{\times}$};
+\draw (16, -6) node[red, scale=2]{$\bm{\times}$};
+\draw[red, dashed, thick](16, -6) -- (14, -3) -- (16.5, 0);
+
+%\draw (4.1, -2) node[red, scale=2, right]{$m_k$};
+%\draw (6, -3.2) node[red, scale=2, below]{$m_{k-1}$};
+%\draw (6,0) node[red, scale=2, right]{$m_{k+1}$};
+%\draw  (6.25, 1.5) node[red, scale=2, right]{$m_{k+2}$};
+%\draw (5, 3.2) node[red, scale=2, above]{$m_{k+3}$};
+
+
+\draw (16, -6) node[red, scale=2, below]{$m_{k-1}$};
+\draw (13.5, -2.5) node[red, scale=2]{$m_{k}$};
+
+\draw[->,>=latex, red, very thick] (14, -3) to (16, -3);
+\draw (16, -3.1) node[red, scale=2, above]{$\bm{n}_{k}^\Gamma$};

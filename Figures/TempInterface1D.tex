@@ -1,0 +1,19 @@
+    
+    \fill[red!95!gray!10] (2,2) rectangle (4,0);
+    
+    \fill[blue!90!gray!10] (4,2) rectangle (6,0);
+    
+    \fill[orange!90!gray!10] (0,2) rectangle (2,0);
+
+    \foreach \x in { 0, 2}
+        \draw[black!60, thick, dashed](-0.2,\x) -- (6.2,\x);
+    
+    \foreach \x in { 0, 2, 4, 6}
+       \draw[black!60, thick, dashed](\x,-0.) -- (\x,2);
+    
+    
+    \draw[red, very thick] (2.8,2) -- (2.8,0);
+    
+    
+    \foreach \x in { 1, 3, 5}
+        \draw (\x,1) node[scale=1.5]{$\times$};

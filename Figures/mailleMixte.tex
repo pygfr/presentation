@@ -1,0 +1,57 @@
+
+\fill[blue!95!gray!10] (-0.2,-0.2) -- (-0.2,8.2) -- (2,8.2) -- (2,2) -- (6,2) -- (6,-0.2)  -- cycle;
+\fill[orange!95!gray!10] (4,8.2) -- (10.2,8.2) -- (10.2,-0.2) -- (8,-0.2) -- (8,4) -- (4,4)  -- cycle;
+\fill[green!35!gray!10] (2,8.2) -- (4,8.2) -- (4,4) -- (2,4)  -- cycle;
+\fill[green!35!gray!10] (2,4) rectangle (6,2);
+\fill[green!35!gray!10] (6,4) rectangle (8,-0.2);
+
+
+\foreach \x in { 0, 2, 4, 6, 8}
+    \draw[black!60, thick, dashed](-0.2,\x) -- (10.2,\x);
+
+\foreach \x in { 0, 2, 4, 6, 8, 10}
+   \draw[black!60, thick, dashed](\x,-0.2) -- (\x,8.2);
+
+
+
+
+%\draw (2.7,8.5) node[red, above, scale=1.5]{$\Gamma$};
+
+\draw (7,8.5) node[ above, scale=1.5]{$solide$};
+\draw (1,8.5) node[ above, scale=1.5]{$liquide$};
+
+%\draw[very thick,red ](2.7,8.5) -- (3.3,4);
+%\draw[very thick,red](3.3,4) -- (3.4,3.25) -- (6.0, 2.2);
+%\draw[very thick,red](6.0, 2.2) -- (6.2, 2.11) -- (7.8, -0.2) ;
+
+%\draw (3.4,3.25) node[ scale=2]{$\bm{\times}$};
+%\draw (6.2, 2.11) node[ scale=2]{$\bm{\times}$};
+
+
+
+
+\draw (1,1) node[blue, scale=1.5]{$\chi=0$};
+\draw (3,1) node[blue, scale=1.5]{$\chi=0$};
+\draw (5,1) node[blue, scale=1.5]{$\chi=0$};
+\draw (1,3) node[blue, scale=1.5]{$\chi=0$};
+\draw (1,5) node[blue, scale=1.5]{$\chi=0$};
+\draw (1,7) node[blue, scale=1.5]{$\chi=0$};
+
+\draw (9,7) node[orange, scale=1.5]{$\chi=1$};
+\draw (9,5) node[orange, scale=1.5]{$\chi=1$};
+\draw (9,3) node[orange, scale=1.5]{$\chi=1$};
+\draw (9,1) node[orange, scale=1.5]{$\chi=1$};
+\draw (7,7) node[orange, scale=1.5]{$\chi=1$};
+\draw (5,7) node[orange, scale=1.5]{$\chi=1$};
+\draw (7,5) node[orange, scale=1.5]{$\chi=1$};
+\draw (5,5) node[orange, scale=1.5]{$\chi=1$};
+
+
+\draw (3,7) node[black!30!green!99, scale=1.3]{$\chi=0.6$};
+\draw (3,5) node[black!30!green!99, scale=1.3]{$\chi=0.4$};
+\draw (3,3) node[below, black!30!green!99, scale=1.3]{$\chi=0.15$};
+\draw (5,3) node[black!30!green!99,above, scale=1.3]{$\chi=0.8$};
+\draw (7,3) node[black!30!green!99, scale=1.3]{$\chi=0.97$};
+\draw (7,1) node[black!30!green!99, scale=1.3]{$\chi=0.5$};
+
+
