@@ -539,7 +539,7 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
 \begin{enumerate}
 			\item \textbf{Remaillage}: adaptation du maillage à la nouvelle interface.
 			\item \textbf{Projection}: de la température température sur le nouveau maillage (utilisation des fonctions éléments finis).
-			\item \textbf{Résolution}: de l'équation de la chaleur avec l'élément mixte de Raviart-Thomas.
+			\item \textbf{Résolution}: de l'équation de la chaleur avec l'élément mixte de Raviart-Thomas. \bib{Project Fenics}
 		\end{enumerate}
 \center $\Rightarrow$ \textbf{Identification} directe des flux thermiques à l'interface.
 		\end{ceablock}
@@ -671,11 +671,11 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
     Plusieurs comparaisons ont été réalisés entre le modèle d'interface 0D et le nouveau modèle d'interface 2D.\\
    \includegraphics[width=0.47\textwidth]{Figures/IndustrialTestmasses2.pdf}
     \includegraphics[width=0.47\textwidth]{Figures/IndustrialTestdiffMasses2.pdf}\\
-     \center \includegraphics[width=0.3\textwidth]{Figures/modele_croute_0D.png}
-    
+
+ \center\includegraphics[width=0.3\textwidth]{Figures/modele_croute_0D.png}
+ \includegraphics[width=0.35\textwidth]{Figures/Full2D_Bi1_2_t200002.png}
     
 \end{frame}
-
 %--------------------------------------------------------------------------
 %==========================================================================
 %--------------------------------------------------------------------------
@@ -777,36 +777,32 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
     \frametitle{Méthode VOF--Front-Tracking}
     \scriptsize
     \begin{columns}[c]
-    \begin{column}{0.7 \textwidth}
-    \begin{ceablock}{La méthode Front-Tracking}
+    \begin{column}{0.6 \textwidth}
+    \begin{ceablock}{La méthode Front-Tracking :}
         \begin{itemize}
-            \item Utilisation d'un maillage eulérien pour résoudre les équations de Navier-Stokes
-            \item Construction d'un deuxième maillage, lagrangien, pour modéliser l'interface. 
-            \item Nécessite des méthodes d'interpolation pour communiquer des informations d'un maillage à l'autre.
-            \item Besoin de méthodes spécifiques sur le maillage eulérien pour utiliser l'information du maillage lagrangien.
-            \item Pas naturellement conservatif.
-            \item Certains phénomènes difficiles à prendre en compte (coalescence, séparation de phase ...) 
-            \item Suivi précis de l'interface, accepte de grandes déformations
+            \item Méthodes d'interpolation nécessaire pour communiquer des informations d'un maillage à l'autre.
+            \item \textbf{Pas naturellement conservative}.
+            \item Algorithmie difficile à mettre en place.
         \end{itemize}
     \end{ceablock}
-\begin{ceablock}{La méthode VOF}
+\begin{ceablock}{La méthode VOF :}
         \begin{itemize}
             \item Méthode eulérienne, utilisant une fonction de fraction de présence.
-            \item Conservative par construction.
+            \item \textbf{Conservative} par construction.
             \item Pas de suivi de l'interface, besoin d'algorithme de reconstruction d'interface.
             
         \end{itemize}
     \end{ceablock}
 \end{column}
-\begin{column}{0.3 \textwidth}
+\begin{column}{0.4 \textwidth}
 \begin{center}
-		\begin{tikzpicture}[scale = 0.3, every node/.style={scale=0.3}]
+		\begin{tikzpicture}[scale = 0.4, every node/.style={scale=0.4}]
 			\input{./Figures/maillageInterface.tex}
 		\end{tikzpicture}
 
 \end{center}
 \begin{center}
-		\begin{tikzpicture}[scale = 0.3, every node/.style={scale=0.3}]
+		\begin{tikzpicture}[scale = 0.4, every node/.style={scale=0.4}]
 			\input{./Figures/mailleMixte.tex}
 		\end{tikzpicture}
 
@@ -821,18 +817,15 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
         \footnotesize
         \begin{ceablock}{Schéma en temps explicite :}
         \begin{itemize}
-            \item Résolution de la vitesse du fluide.
-            			\begin{itemize}
-				\item Dans un premier temps résolution par méthode de prédiction-projection avec divergence nulle.
-				\item Ajout de la méthode de pénalisation, toujours avec divergence nulle.
-				\item Puis ajout d'une divergence non nulle.
-			\end{itemize}
+            \item Résolution de la vitesse du fluide.\\
+				\color{cea_texte!70}$\bullet$ Dans un premier temps résolution par méthode de prédiction-projection avec divergence nulle.\\
+				$\bullet$ Ajout de la méthode de pénalisation, toujours avec divergence nulle.\\
+				$\bullet$ Ajout du terme de divergence non nul.\color{cea_texte}
+			
             \item Déplacement des marqueurs et mise à jour de la fonction $\chi_v$.
-            \item Résolution de la température.
-            \begin{itemize}
-            	\item Présentation de la méthode ghost-fluid.
-            	\item Présentation des modifications apportées.
-            \end{itemize}
+            \item Résolution de la température.\\
+            	\color{cea_texte!70}$\bullet$ Présentation de la méthode ghost-fluid sans prise en compte des états d'interface.\\
+            	$\bullet$ Adaptation de la méthode Ghost-Fluid à la notion d'états d'interfaces.           
         \end{itemize}
         \end{ceablock}
     
@@ -841,13 +834,13 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
 \begin{frame}
     \frametitle{Résolution de la vitesse : méthode de prédiction-projection}
     \footnotesize
-    \begin{ceablock}{Résolution de la vitesse sur tout le domaine par une méthode de prédiction-projection.}
+    \begin{ceablock}{Résolution de la vitesse sur tout le domaine par une méthode de prédiction-projection :}
 	\textbf{Prédiction :}
 	\begin{align} 
 		\vect{u}^* &= \vect{u}^n - \Delta t \nabla_h \cdot (\vect{u}^n \vect{u}^n) + \frac{\Delta t}{\rho^n_f} \nabla_h \cdot(\mu^n(\nabla_h \vect{u}^n+\nabla^T_h \vect{u}^n)),
 	\end{align}
-	où $\vect{u}^*$ est la prédiction de la vitesse, $\mu^n$ la viscosité discrète, $\rho^n_f$ la masse volumique discrète aux faces  et où $\vect{g}$ est le vecteur gravité.  %(obtenue par interpolation linéaire)
-	
+	\color{cea_texte!70}où $\vect{u}^*$ est la prédiction de la vitesse, $\mu^n$ la viscosité discrète, $\rho^n_f$ la masse volumique discrète aux faces  et où $\vect{g}$ est le vecteur gravité.\color{cea_texte}\\  %(obtenue par interpolation linéaire)
+	\vspace{0.3cm}
 
 	\textbf{Projection :}
 Rajout de la contribution de la pression $P^\npl$, de manière à obtenir une vitesse à divergence nulle.
@@ -855,7 +848,7 @@ Rajout de la contribution de la pression $P^\npl$, de manière à obtenir une vi
 	\begin{align}
 		\vect{u}^{n+1} &= \vect{u}^* + \frac{\Delta t}{\rho^n_f} \nabla_h P^{n+1},
 	\end{align}
-	où, $P^{n+1}$ est obtenue en résolvant : 
+	\color{cea_texte!70}où, $P^{n+1}$ est obtenue en résolvant : \color{cea_texte}
 \begin{align}
 \label{eq:Pression}
 					 \nabla_h \cdot  \left( \frac{1}{\rho^n_f} \nabla_h P^\npl \right) &=  -\frac{1}{\Delta t} \nabla_h \cdot \vect{u}^*. 
@@ -868,8 +861,8 @@ Rajout de la contribution de la pression $P^\npl$, de manière à obtenir une vi
     \frametitle{Résolution de la vitesse : la méthode de pénalisation}
     \footnotesize
      \footnotesize
-        \begin{ceablock}{Modification de l'algorithme initial pour imposer une vitesse nulle sur le solide}
-	Utilisation de la méthode de pénalisation, déjà présente dans TrioCFD (voir M. Belliard et al.)
+        \begin{ceablock}{Modification de l'algorithme initial pour imposer une vitesse nulle sur le solide :}
+	Utilisation de la méthode de pénalisation, déjà présente dans TrioCFD \bib{Belliard et al.}
 \begin{align}
 	\vect{I}^n &= \nabla_h \cdot (\vect{u}^n \vect{u}^n) + \frac{1}{\rho^n} \nabla_h \cdot(\mu^n(\nabla_h \vect{u}^n+\nabla_h^T \vect{u}^n)).
 \end{align}
@@ -878,7 +871,7 @@ Rajout de la contribution de la pression $P^\npl$, de manière à obtenir une vi
 	(1+\frac{\chi}{\eta} ) \vect{u}^* &= \vect{u}^n + \Delta t \vect{I}^n, \label{eq:PDFpred1} \\ 
 	\vect{u}^* &= \frac{\vect{u}^n + \Delta t \vect{I}^n}{(1+\frac{\chi}{\eta} )}. \label{eq:PDFpred2}
 \end{align}
-	où $\eta$ est le facteur de pénalisation très proche de $0$.
+	où $\eta$ est le facteur de pénalisation très proche de $0$, $\eta=10^{-12}$.
 	
 
 	\textbf{Projection :}
@@ -896,27 +889,24 @@ Rajout de la contribution de la pression $P^\npl$, de manière à obtenir une vi
 \begin{frame}
     \frametitle{Résolution de la vitesse : discrétisation de la divergence}
     \footnotesize
-    \footnotesize
-        Il faut prendre en compte la divergence non-nulle due au changement de volume.\\
+        Il faut prendre en compte la \textbf{divergence non-nulle} due au changement de volume.\\
 \begin{align}
 	 \int_\omega \zeta (t) dx &= \int_{\inte (t) \cap \omega} \Dot{m}(t) \left( \frac{1}{\rho_l} - \frac{1}{\rho_s} \right) d\sigma dt.
 \end{align}
 
-\begin{ceablock}{Discrétisation}
+\color{cea_rouge}\underline{Discrétisation :}\color{cea_texte}
 \begin{align}
 	\zeta^n &= \frac{\normeVec{\inte^n \cap \omega}}{\normeVec{\omega}}\Dot{m}^n \left( \frac{1}{\rho_l} - \frac{1}{\rho_s} \right).
 \end{align}
-\end{ceablock}
-\begin{ceablock}{Modification de l'espace de projection}
+\color{cea_rouge}\underline{Modification de l'espace de projection :}\color{cea_texte}
 \begin{align}
 	\label{eq:pression3}
 	\frac{\eta}{\eta + \chi} \nabla_h \cdot \left( \frac{1}{\rho^n_f} \nabla_h P^\npl \right) &= -\frac{1}{\Delta t} \nabla_h \cdot \vect{u}^* + \frac{1}{\Delta t} \zeta^n.
 \end{align}
-\end{ceablock}
-
+\vspace{0.3cm}
 
 \begin{center}
-		\begin{tikzpicture}[scale = 0.5, every node/.style={scale=0.5}]
+		\begin{tikzpicture}[scale = 0.55, every node/.style={scale=0.55}]
 			\input{./Figures/divDisDepl.tex}
 		\end{tikzpicture}
 \end{center}
@@ -931,12 +921,12 @@ Calcul de $\vect{u}^\inte$ :
 	\vect{u}^{\inte,n} &=  - \nabla \cdot \left( \frac{\Dot{m}^n}{\rho_s}d^n \right),
 \end{align}
 \begin{enumerate}
-	\item Déplacement théorique de la fonction couleur $\chi$,
-	\item déplacements des marqueurs $m_k$,
-	\item algorithme de remaillage, lissage, barycentrage,
-	\item correction du déplacement des marqueurs à l'aide de la fonction $\chi$,
-	\item mise à jour de la fonction $\chi$ en fonction des marqueurs,
-	\item mise à jour de la fonction level-set $d$, représentant la distance signée à l'interface.
+	\item Déplacement théorique de la fonction couleur $\chi$.
+	\item Déplacements des marqueurs $m_k$.
+	\item Algorithme de remaillage, lissage, barycentrage.
+	\item Correction du déplacement des marqueurs à l'aide de la fonction $\chi$.
+	\item Mise à jour de la fonction $\chi$ en fonction des marqueurs.
+	\item Mise à jour de la fonction level-set $d$, représentant la distance signée à l'interface.
 
 \end{enumerate}
 \end{frame}
@@ -946,18 +936,18 @@ Calcul de $\vect{u}^\inte$ :
     	\footnotesize
 \begin{ceablock}{Séparation de l'équation de température en deux équations, une pour chaque phase :}
 \begin{align}
- (\delta T_k^\npl)   = (\delta T^n) + \frac{\lambda_s \Delta t }{\rho_s C_{p,s}}  \Delta_h T_s^n - \Delta t \nabla_h \cdot ( \vect{u}^{T,n} \delta T_s^n).
+ (\delta T_k^\npl)   = (\delta T^n_k) + \frac{\lambda_k \Delta t }{\rho_k C_{p,k}}  \Delta_h T_k^n - \Delta t \nabla_h \cdot ( \vect{u}^{T,n} \delta T_k^n).
 \end{align}
 définie sur tout le domaine. On se concentre, dans la suite, sur l'équation thermique  du solide.
 \end{ceablock}
 
-\begin{ceablock}{Température d'interface définie par méthode Ghost-Fluid}
-1/ Calcul d'un gradient thermique normal à l'interface sur le centre des mailles solides.
+\begin{ceablock}{Température d'interface définie par méthode Ghost-Fluid :}
+1/ Calcul d'un \textbf{gradient thermique normal} à l'interface sur le centre des mailles solides.
 \begin{align}
  (\ghost T_s \cdot \norm) &= \frac{T^\inte - T_s}{d}.
 \end{align}
 \end{ceablock}
-2/ Extrapolation du gradient aux mailles mixtes et liquides proches de l'interface.
+2/ \textbf{Extrapolation du gradient} aux mailles mixtes et liquides proches de l'interface.
 \begin{center}
 		\begin{tikzpicture}[scale = 0.65, every node/.style={scale=0.65}]
 			\input{./Figures/conductionSchema2.tex}
@@ -973,21 +963,21 @@ définie sur tout le domaine. On se concentre, dans la suite, sur l'équation th
 	\item Suivi de l'état d'interface par un nouveau champ sur les mailles eulériennes :
 \begin{align}
 \label{eq:etatn2}
-E_{i,j}^\npl &=\left\{ {\renewcommand{\arraystretch}{1.5}\begin{array}{l} 
-\text{conduction} \text{ si } T^\sol < T^{\Gamma,n}_{i,j} <T^\fus,\\
-\text{conduction} \text{ si } E_{i,j}^n = \text{fusion} \text{ et } \dot{m}_{i,j}<0,\\
-\text{conduction} \text{ si } E_{i,j}^n = \text{solidification} \text{ et } \dot{m}_{i,j}>0,\\
-\text{fusion} \text{ si } T^{\Gamma,n}_{i,j} \geq T^\fus \text{ et } \dot{m}_{i,j} \geq 0,\\
-\text{solidification} \text{ si } T^{\Gamma,n}_{i,j} \leq T^\sol \text{ et } \dot{m}_{i,j} \leq 0.
+E^\npl &=\left\{ {\renewcommand{\arraystretch}{1.5}\begin{array}{l} 
+\text{conduction} \text{ si } T^\sol < T^{\Gamma,n} <T^\fus,\\
+\text{conduction} \text{ si } E^n = \text{fusion} \text{ et } \dot{m}<0,\\
+\text{conduction} \text{ si } E^n = \text{solidification} \text{ et } \dot{m}>0,\\
+\text{fusion} \text{ si } T^{\Gamma,n} \geq T^\fus \text{ et } \dot{m} \geq 0,\\
+\text{solidification} \text{ si } T^{\Gamma,n} \leq T^\sol \text{ et } \dot{m} \leq 0.
  \end{array}}\right.
 \end{align}
 Puis extrapolation de ce nouveau champ d'état aux mailles pures proches.
 \item Calcul d'une nouvelle température d'interface, dépendante de l'état de la maille :
 \begin{align}
 	T^{\inte} &= \left\{ {\renewcommand{\arraystretch}{1.}\begin{array}{l l l} 
-		T^\fus & \text{ si la maille mixte est en fusion},\\
-		T^{\text{cond}} & \text{  si la maille mixte est en  conduction},\\
-		T^\sol & \text{ Si la maille mixte est en solidification}.
+		T^\fus & \text{ si la maille est en fusion},\\
+		T^{\text{cond}} & \text{  si la maille  est en  conduction},\\
+		T^\sol & \text{ Si la maille est en solidification}.
  \end{array}}\right.
 \end{align} 
 où $T^{\cond}$ est calculée le cas échéant.
@@ -1001,16 +991,17 @@ où $T^{\cond}$ est calculée le cas échéant.
 
 \begin{frame}
     \frametitle{Calcul de $ T^{\cond}$}
+    \footnotesize
 Pour approcher $T^{\text{cond}}$, on  utilise une \textbf{interpolation linéaire}.
     \begin{align}
     T^{\text{cond}} &= \Frac{\lambda_s \overline{T_s} \, \overline{d_l} - \lambda_l \overline{T_l}  \, \overline{d_s}}{\lambda_s \overline{d_l} - \lambda_l \overline{d_s}}.
 \end{align}
-\footnotesize
-Où $\overline{T_k}$ est une température moyenne du côté de la phase $k$ et  $\overline{d_k}$ une distance moyenne du côté de la phase $k$.
+
+Où $\overline{T_k}$ est une température moyenne du côté de la phase $k$ et  $\overline{d_k}$ une distance moyenne signée du côté de la phase $k$.
 \begin{columns}[c]
     \begin{column}{0.5 \textwidth}
 \begin{center}
-		\begin{tikzpicture}[scale = 0.45, every node/.style={scale=0.45}]
+		\begin{tikzpicture}[scale = 0.55, every node/.style={scale=0.55}]
 			\input{./Figures/Tcond1.tex}
 		\end{tikzpicture}
 
