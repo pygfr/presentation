@@ -503,7 +503,7 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
 \begin{frame}
     \frametitle{Résolution du modèle d'interface 2D}
     \footnotesize
-	\begin{ceablock}{Discrétisation et déplacement de l'interface}
+	\begin{ceablock}{Discrétisation et déplacement de l'interface :}
 	\begin{columns}[c]
 	\begin{column}{0.7\textwidth}
 	\begin{itemize}
@@ -535,7 +535,7 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
 
 \begin{columns}[c]
 	\begin{column}{0.6\textwidth}
-	\begin{ceablock}{Résolution du solide par éléments finis mixtes}
+	\begin{ceablock}{Résolution du solide par éléments finis mixtes :}
 \begin{enumerate}
 			\item \textbf{Remaillage}: adaptation du maillage à la nouvelle interface.
 			\item \textbf{Projection}: de la température température sur le nouveau maillage (utilisation des fonctions éléments finis).
@@ -637,7 +637,7 @@ T=T^\fus,   \; \text{ si } \Dot{m}>0.
 \begin{frame}
     \frametitle{Présentation du cas test de croûte}
  \scriptsize
-    \underline{Objectif} : utilisation du modèle 2D dans une simulation plus complexe (avec un couplage d'autres modèles). Simulation de la formation de la croûte pendant une stratégie IVR. Trois étapes \bib{Viot et al. 2020}:
+    \underline{Objectif} : utilisation du modèle 2D dans une simulation plus complexe (avec un couplage d'autres modèles). Simulation de la \textbf{formation de la croûte} pendant une stratégie IVR. Trois étapes \bib{Viot et al. 2020}:
     \begin{itemize}
         \item Bain de corium tout oxyde $\rightarrow$ Formation d'une croûte tout oxyde.
         \item Ajout d'élément métallique dans le corium liquide $\rightarrow$ Stratification du bain de corium et discontinuités des flux thermiques provenant du liquide.
@@ -1021,22 +1021,22 @@ Où $\overline{T_k}$ est une température moyenne du côté de la phase $k$ et  
 
 
 \begin{frame}
-    \frametitle{Calcul de $\Dot{m}$}
+    \frametitle{Calcul du taux de transfert de masse par unité de surface}
 	\footnotesize
 On définit $\Dot{m}^n$ par : 
 \begin{align} \label{eq:mPoint}
-	\Dot{m}^\npl &= \frac{\Dot{m}_l^\npl - \Dot{m}_s^\npl}{\Delta \mathcal{H}^\Gamma},
+	\Dot{m} &= \frac{\lambda_l \, (\ghost T_l \cdot \norm) - \lambda_s \, (\ghost T_s \cdot \norm)}{\Delta \mathcal{H}^\Gamma},
 \end{align}
-où :
-\begin{align} \label{eq:mPointk}
-	\Dot{m}_k &= \lambda_k \, (\ghost T_k \cdot \norm),
-\end{align}
+%où :
+%\begin{align} \label{eq:mPointk}
+%	\Dot{m}_k &= \lambda_k \, (\ghost T_k \cdot \norm),
+%\end{align}
 
-Pour assurer le respect de l'état de l'interface, si l'état est en conduction, alors, le taux $\Dot{m}^n$ est imposé à $0$.
+Pour assurer le respect de l'état de l'interface, si l'état est en conduction, alors, le taux $\Dot{m}$ est imposé à $0$.
 \begin{align}
-	\Dot{m}^n_{i,j} &= \left\{ {\renewcommand{\arraystretch}{2}\begin{array}{l l} 
-	0 &\text{ si } E_{i,j}^\npl = \text{conduction}\\
-	\frac{\Dot{m}_l^\npl - \Dot{m}_s^\npl}{\Delta \mathcal{H}^\Gamma} &\text{ sinon }
+	\Dot{m} &= \left\{ {\renewcommand{\arraystretch}{2}\begin{array}{l l} 
+	0 &\text{ si } E = \text{conduction}\\
+	\frac{\lambda_l \, (\ghost T_l \cdot \norm) - \lambda_s \, (\ghost T_s \cdot \norm)}{\Delta \mathcal{H}^\Gamma} &\text{ sinon }
 	\end{array}}\right.	
 \end{align}
 
@@ -1047,7 +1047,61 @@ Pour assurer le respect de l'état de l'interface, si l'état est en conduction,
 
 \begin{frame}
 	\frametitle{Implémentation et planification des cas test}
+	\footnotesize
+	\textbf{Implémentation} des adaptations présentées dans TrioCFD.\\
+	\color{cea_rouge}\underline{Planification des cas tests présentées :}\color{cea_texte}\\
+	\vspace{0.3cm}
 	
+	
+\begin{columns}[c]
+    \begin{column}{0.5 \textwidth}
+    \underline{Cas test de Stefan 1D :}\\
+    	$\bullet$ Validation de l'adaptation de la méthode de pénalisation.\\
+    	$\bullet$ Validation de l'adaptation de la méthode Ghost-Fluid.\\
+    	
+
+
+\end{column}
+    \begin{column}{0.5 \textwidth}
+		\begin{tikzpicture}[scale = 0.6, every node/.style={scale=0.6}]
+			\input{./Figures/config.tex}
+		\end{tikzpicture}
+
+   \end{column}
+   \end{columns}	
+   
+   	
+\begin{columns}[c]
+    \begin{column}{0.5 \textwidth}
+       \underline{Cas test de l'angle 2D :}\\
+        $\bullet$ Validation de l'adaptation de la méthode de pénalisation.\\
+    	$\bullet$ Validation de l'adaptation de la méthode Ghost-Fluid.\\
+    	
+\end{column}
+    \begin{column}{0.5 \textwidth}
+    		\center \begin{tikzpicture}[scale = 0.2, every node/.style={scale=0.2}]
+			\input{./Figures/configAngle2.tex}
+		\end{tikzpicture}
+
+
+   \end{column}
+\end{columns}	
+
+
+	\begin{columns}[c]
+    \begin{column}{0.5 \textwidth}
+	\underline{ Cas test de la couche mince.}\\
+	$\bullet$  Résultats 2D.\\
+	$\bullet$ Résultats 3D.
+	
+	\end{column}
+    \begin{column}{0.5 \textwidth}
+\center\begin{tikzpicture}[scale =0.26, every node/.style={scale=0.3}]
+\input{./Figures/configCouche2.tex}
+\end{tikzpicture}
+
+   \end{column}
+\end{columns}
 \end{frame}
 
 
@@ -1055,20 +1109,24 @@ Pour assurer le respect de l'état de l'interface, si l'état est en conduction,
 \begin{frame}
     \frametitle{Cas test de validation : cas test de Stefan}
 	\scriptsize
-
+\color{cea_rouge}\underline{Validation 1D de la méthode de pénalisation :}\color{cea_texte}\\
 \begin{columns}
 \begin{column}{0.5 \textwidth}
-\underline{Solide et liquide de même nature, densité différente}
+
         %\vspace{0.5\linewidth}
-        \includegraphics[width=0.7\textwidth]{Figures/StefanConvDX.eps}	
+        \includegraphics[width=1\textwidth]{Figures/StefanConvDX.eps}	
 	%\includegraphics[width=1\textwidth]{Figures/avantApresRhoDiff0000.png}
 
 
+
+
+\end{column}
+    \begin{column}{0.5 \textwidth}
 \begin{table}
 	%    \hspace{-2cm}
 	%\resizebox{.99\textwidth}{!}{
 	%\renewcommand{\arraystretch}{1}
-	\tiny
+	\scriptsize
 		\begin{tabular}{|c|c||cc|}
 			\hline
 			$N_x$ & $\Delta x$ & $L^2$ error & $L^2$ order \\
@@ -1086,50 +1144,43 @@ Pour assurer le respect de l'état de l'interface, si l'état est en conduction,
 			\hline
 		\end{tabular}
 \end{table}
-\includegraphics[width=1\textwidth]{Figures/avantApresRhoDiff0000.png}
-\end{column}
-    \begin{column}{0.5 \textwidth}
-		\
-		\begin{tikzpicture}[scale = 0.6, every node/.style={scale=0.6}]
-			\input{./Figures/config.tex}
-		\end{tikzpicture}
-
 
    \end{column}
    \end{columns}
 
-
+\center \includegraphics[width=0.8\textwidth]{Figures/avantApresRhoDiff0000.png}
 \end{frame}
 \begin{frame}
     \frametitle{Cas test de validation : cas test de Stefan}
 	\scriptsize
-	
+	\color{cea_rouge}\underline{Validation 1D de la méthode Ghost-Fluid :}\color{cea_texte}\\
 	\begin{center}
 
-\includegraphics[width=0.9\textwidth]{Figures/StefanTFusTSol.eps}
+\includegraphics[width=0.85\textwidth]{Figures/StefanTFusTSol.eps}
 \end{center}
 	\end{frame}
 
 \begin{frame}
     \frametitle{Cas test de validation : cas test de l'angle 2D}
-	\tiny
+	\footnotesize
 
 
 \begin{columns}
 \begin{column}{0.5 \textwidth}
 
-\underline{Solide et liquide de même nature, densité différente}
+\color{cea_rouge}\underline{Validation 2D de la méthode de pénalisation :}\color{cea_texte}\\
      \begin{center}
         %\vspace{0.5\linewidth}
-        \includegraphics[width=0.7\textwidth]{Figures/angleIBCDiff0000.png}	\\
-	\includegraphics[width=0.7\textwidth]{Figures/AngleExEyDiff.eps}
+        \includegraphics[width=1\textwidth]{Figures/angleIBCDiff0000.png}	
+
     \end{center}
 \end{column}
     \begin{column}{0.5 \textwidth}
-\begin{center}
-		\begin{tikzpicture}[scale = 0.25, every node/.style={scale=0.25}]
+    \center \begin{tikzpicture}[scale = 0.2, every node/.style={scale=0.2}]
 			\input{./Figures/configAngle2.tex}
 		\end{tikzpicture}
+\begin{center}
+	\includegraphics[width=0.7\textwidth]{Figures/AngleExEyDiff.eps}
 
 \end{center}
 
@@ -1142,7 +1193,8 @@ Pour assurer le respect de l'état de l'interface, si l'état est en conduction,
 
 \begin{frame}
     \frametitle{Cas test de validation : cas test de l'angle 2D}
-	\tiny
+    \footnotesize
+\color{cea_rouge}\underline{Validation 2D de la méthode Ghost-Fluid :}\color{cea_texte}\\
 \begin{center}
 
 \includegraphics[width=0.7\textwidth]{Figures/AngleTfusTsol_0_0150000.png}
@@ -1255,9 +1307,9 @@ Pour assurer le respect de l'état de l'interface, si l'état est en conduction,
     \scriptsize
     \begin{ceablock}{Modèle 2D lagrangien du code \procor}
         \begin{itemize}
-            \item Un nouveau modèle 2D/0D a été développé. L'équation de la chaleur est résolue en 2D et l'interface liquide-solide évolue en 2D.
-            \item Pas besoin de schéma implicite.
-            \item Méthode éléments finis mixtes, remaillage, projection, couplage de modèle.
+            \item Un nouveau modèle 2D a été développé. L'équation de la chaleur est résolue en 2D et l'interface liquide-solide évolue en 2D.
+            \item Méthode éléments finis mixtes, remaillage, projection.
+            \item Possibilité de couplage du modèle 2D avec des modèles 0D.
             \item Plusieurs validations ont été réalisées ainsi que des comparaisons avec un modèle 0D préexistant.
             \item Un cas test plus industriel (formation de la croûte) a été proposé, avec comparaison au modèle 0D.
         \end{itemize}
@@ -1270,7 +1322,7 @@ Pour assurer le respect de l'état de l'interface, si l'état est en conduction,
             \item Utilisation de la méthode de pénalisation pour supprimer la vitesse sur le solide.
             \item Adaptation de la méthode Ghost-Fluid pour prendre en compte les différentes fermetures thermique de l'interface.
             \item Validation des développements réalisés sur des cas tests de validation 1D et 2D.
-            \item Réalisation d'un cas test plus industriel (simulation de la couche métallique légère), proposition d'une illustration 3D.
+            \item Réalisation d'un cas test plus industriel (simulation de la couche métallique légère), calculs 3D.
         \end{itemize}
     \end{ceablock}
 
@@ -1278,32 +1330,57 @@ Pour assurer le respect de l'état de l'interface, si l'état est en conduction,
 
 
 \begin{frame}
-    \frametitle{Perspectives}
+    \frametitle{Perspectives pour le modèle 2D lagrangien}
     \scriptsize
-    
+    \color{cea_rouge}\underline{Validation :} \color{cea_texte}
          \begin{itemize}
         	\item  Poursuite de la validation du modèle 2D développé dans \procor, notamment avec une comparaison entre code maillé.
-        	\item  Complexification de la physique à l'interface, par exemple en prenant en compte un changement de phase non congruent et en introduisant des modèles de thermochimie.
+        	\end{itemize}
+        	\color{cea_rouge}\underline{Utilisation future des développements :} \color{cea_texte}
+        	\begin{itemize}
         	 \item  Utilisation du modèle dans d'autres applications, par exemple pour la modélisation d'un récupérateur dans le cadre d'un réacteur neutron rapide.
         	 
-        	  {\center \rule{0.8\linewidth}{1pt}}
+        	  
+            
+        \end{itemize}
+        	
+        	\color{cea_rouge}\underline{Complexification de la modélisation :} \color{cea_texte}
+        \begin{itemize}
+        	\item  Complexification de la physique à l'interface, par exemple en prenant en compte un changement de phase non congruent et en introduisant des modèles de thermochimie.
+        	\end{itemize}
+        	
+
+\end{frame}
+\begin{frame}
+    \frametitle{Perspectives pour le modèle VOF-FT}
+    \scriptsize
+        \color{cea_rouge}\underline{Validation :} \color{cea_texte}
+         \begin{itemize}
+        	
         	  	
         	\item  Validation 3D de la méthode Ghost-Fluid adaptée. Plus largement, des benchmarks entre codes et méthodes numériques pour valider les développements réalisés sur la méthode VOF-FT. 
+        	        	\end{itemize}
+        	        	\color{cea_rouge}\underline{Utilisation future des développements :} \color{cea_texte}
+        \begin{itemize}
         	\item Benchmark avec d'autres codes liée à une campagne d'essais LIVE.
         	\item Prochaine collaboration avec des équipes canadiennes sur un benchmark portant sur une configuration 3D.
+        	\item Poursuite de l'étude de la couche mince avec ajout de méthodes LES (Large Eddy Simulation) pour la modélisation de la turbulence.
         	
-        	
-        	
+        	\end{itemize}
+        	\color{cea_rouge}\underline{Complexification de la modélisation :} \color{cea_texte}
+        	\begin{itemize}
             
             \item Amélioration de la méthode d'interpolation utilisée dans la méthode Ghost-Fluid. Éventuellement remplacement de la méthode Ghost-Fluid pour une méthode plus adaptée.
             \item Introduction du suivi des espèces dans le modèle de CFD.
             
            
-            \item Poursuite de l'étude de la couche mince avec ajout de méthodes LES (Large Eddy Simulation) pour la modélisation de la turbulence.
+            \end{itemize}
+        	\color{cea_rouge}\underline{Lien entre CFD et modèles intégraux :} \color{cea_texte}
+        	\begin{itemize}
             
-            {\center \rule{0.8\linewidth}{1pt}}
-            
+           
             \item Proposer des remontées d'échelles entre les simulations CFD et les modélisations intégrales.
+            
             
         \end{itemize}
 
